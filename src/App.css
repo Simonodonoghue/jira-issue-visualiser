@@ -1,0 +1,63 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+.navbar.fixed-left {
+  bottom: 0;
+  top: 0;
+  left: 0;
+  width: 64px;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  position: fixed;
+  padding: 0;
+}
+
+.link-to-do {
+  stroke: rgb(182, 182, 182);
+}
+
+.link-in-progress {
+  stroke: rgb(250, 100, 0);
+  stroke-width: 4px;
+}
+
+.link-done {
+  stroke: rgb(73, 141, 27);
+  stroke-width: 4px;
+}
+
+.nodetext {
+  pointer-events: none;
+  font: 10px sans-serif;
+  background-color: white;
+}
+
+.navbar-nav {
+  width: 100%;
+}
+
+.nav-link.active {
+  background-color:rgb(222, 235, 255, 0.3)
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
