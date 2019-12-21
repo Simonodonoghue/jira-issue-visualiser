@@ -3,14 +3,19 @@ import { Navbar, Nav, Container, Row, Col } from 'react-bootstrap'
 import { FaAudible } from 'react-icons/fa'
 import './NodeVisualiser.css';
 import * as d3 from 'd3';
+import {event as currentEvent} from 'd3';
 import {
     Link
 } from "react-router-dom";
+
+const getEvent = () => event;
 
 class NodeVisualiser extends Component {
 
     constructor(props) {
         super(props)
+
+
     }
 
 
@@ -97,10 +102,10 @@ class NodeVisualiser extends Component {
         }
 
         function dragmove(d, i) {
-            d.px += d3.event.dx;
-            d.py += d3.event.dy;
-            d.x += d3.event.dx;
-            d.y += d3.event.dy;
+            d.px += currentEvent.dx;
+            d.py += currentEvent.dy;
+            d.x += currentEvent.dx;
+            d.y += currentEvent.dy;
             tick(); // this is the key to make it work together with updating both px,py,x,y on d !
         }
 
@@ -124,7 +129,10 @@ class NodeVisualiser extends Component {
             .attr("y", "-8px")
             .attr("width", "16px")
             .attr("height", "16px")
-            .on('click', this.handleClick);
+            .on('click', () => {
+                if (currentEvent.defaultPrevented) return;
+                this.props.nodeClickHandler()
+            });
 
         node.append("svg:text")
             .attr("class", "nodetext")

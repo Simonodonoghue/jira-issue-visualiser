@@ -9,6 +9,8 @@ import {
   Switch,
   Route
 } from "react-router-dom";
+import DataService from './data-service/DataService'
+import AuthService from './auth-service/AuthService'
 
 import NavigationBar from './navigation-bar/NavigationBar'
 import NodeVisualiser from './node-visualiser/NodeVisualiser'
@@ -21,54 +23,28 @@ class App extends Component {
       isPaneOpen: false
     }
 
+    this.nodeClickHandler = this.nodeClickHandler.bind(this)
+
     var self = this
 
-    // Retrieve the authorization code from the query params
-    const urlParams = new URLSearchParams(window.location.search);
-    const myParam = urlParams.get('code');
+    AuthService.auth().then((result) => {
+      self.executeQuery()
+    })
+  }
 
-    // Send the code to lambda and swap it for an access token
-    var Http = new XMLHttpRequest();
-    var url = 'https://jok6vsojnh.execute-api.eu-west-2.amazonaws.com/default/JiraNodeVisualiser-OAuth';
-    Http.open("POST", url, true);
-    Http.send(JSON.stringify({
-      authCode: myParam
-    }))
+  executeQuery() {
+    var jql = prompt("Please enter a JQL URL");
+    DataService.executeJiraQuery(jql).then((result) => {
+      this.setState({
+        jiraData: result
+      })
+    })
+  }
 
-    Http.onreadystatechange = (e) => {
-      if (Http.readyState == 4 && Http.status == 200) {
-        console.log("auth response")
-        console.log(JSON.parse(JSON.parse(Http.responseText)))
-        var at = JSON.parse(JSON.parse(Http.responseText)).access_token
-
-        if (!at) {
-          window.location = 'https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=IbpP46v0z5mLlBLgI2CStabBldUwT9P0&scope=read%3Ajira-user%20read%3Ajira-work&redirect_uri=http%3A%2F%2Flocalhost%3A3000&state=${YOUR_USER_BOUND_VALUE}&response_type=code&prompt=consent'
-        } else {
-          Http = new XMLHttpRequest();
-          var jql = prompt("Please enter a JQL URL");
-          url = 'https://jok6vsojnh.execute-api.eu-west-2.amazonaws.com/default/JiraNodeVisualiser-Query';
-          Http.open("POST", url, true);
-          console.log("access token")
-          console.log(at)
-          Http.send(JSON.stringify({
-            jql: jql,
-            access_token: at,
-            fields: "project,issuelinks,status,issuetype,subtasks"
-          }))
-
-          Http.onreadystatechange = (e) => {
-            if (Http.readyState == 4 && Http.status == 200) {
-              console.log(Http.responseText);
-
-              self.setState({
-                jiraData: JSON.parse(Http.responseText)
-              })
-
-            }
-          }
-        }
-      }
-    }
+  nodeClickHandler() {
+    this.setState({
+      isPaneOpen: true
+    })
   }
 
   render() {
@@ -91,7 +67,7 @@ class App extends Component {
 
                 </Route>
                 <Route path="/visualiser">
-                  {this.state.jiraData ? <NodeVisualiser data={this.state.jiraData} /> : 'loading'}
+                  {this.state.jiraData ? <NodeVisualiser data={this.state.jiraData} nodeClickHandler={this.nodeClickHandler} /> : 'loading'}
                 </Route>
                 <Route path="/test">
                   Testing

@@ -3,7 +3,7 @@ import { Navbar, Nav, Container, Row, Col } from 'react-bootstrap'
 import { IoIosAddCircleOutline, IoIosGitNetwork, IoIosPodium, IoIosCog  } from 'react-icons/io'
 import './NavigationBar.css';
 import {
-  Link
+  NavLink
 } from "react-router-dom";
 
 class NavigationBar extends Component {
@@ -14,9 +14,9 @@ class NavigationBar extends Component {
       <div>
 
         <Navbar fixed="left" bg="nav" variant="dark">
-          <Nav defaultActiveKey="#new" className="flex-column">
-            <Nav.Link href="#new"><IoIosAddCircleOutline style={{ margin: 'auto', display: 'block' }} color='white' size={32} /></Nav.Link>
-            <Nav.Link as={Link} href="#visualiser" to="/visualiser"><IoIosGitNetwork style={{ margin: 'auto', display: 'block' }} color='white' size={32} /></Nav.Link>
+          <Nav className="flex-column">
+            <Nav.Link as={NavLink} exact to="/"><IoIosAddCircleOutline style={{ margin: 'auto', display: 'block' }} color='white' size={32} /></Nav.Link>
+            <Nav.Link as={NavLink} to="/visualiser"><IoIosGitNetwork style={{ margin: 'auto', display: 'block' }} color='white' size={32} /></Nav.Link>
             <Nav.Link href="#charts"><IoIosPodium style={{ margin: 'auto', display: 'block' }} color='white' size={32} /></Nav.Link>
             <Nav.Link href="#settings"><IoIosCog style={{ margin: 'auto', display: 'block' }} color='white' size={32} /></Nav.Link>
           </Nav>
