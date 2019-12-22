@@ -22,7 +22,7 @@ class NodeVisualiser extends Component {
     componentDidMount() {
         var json = this.props.data
 
-        var w = window.innerWidth,
+        var w = window.innerWidth - 85,
             h = window.innerHeight,
             radius = 15
 
@@ -129,9 +129,9 @@ class NodeVisualiser extends Component {
             .attr("y", "-8px")
             .attr("width", "16px")
             .attr("height", "16px")
-            .on('click', () => {
+            .on('click', (d) => {
                 if (currentEvent.defaultPrevented) return;
-                this.props.nodeClickHandler()
+                this.props.nodeClickHandler(d)
             });
 
         node.append("svg:text")

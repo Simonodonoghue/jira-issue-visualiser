@@ -1,5 +1,6 @@
 function auth() {
 
+    // TODO - handle an expired token (integrate refresh tokens so the user isn't sent off for reauth)
     return new Promise(function (resolve, reject) {
         const urlParams = new URLSearchParams(window.location.search);
         const myParam = urlParams.get('code');

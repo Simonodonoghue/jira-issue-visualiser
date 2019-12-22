@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import SlidingPane from 'react-sliding-pane';
 import 'react-sliding-pane/dist/react-sliding-pane.css';
 import { Navbar, Nav, Container, Row, Col } from 'react-bootstrap'
 import { FaAudible } from 'react-icons/fa'
@@ -14,6 +13,7 @@ import AuthService from './auth-service/AuthService'
 
 import NavigationBar from './navigation-bar/NavigationBar'
 import NodeVisualiser from './node-visualiser/NodeVisualiser'
+import JiraIssue from './jira-issue/JiraIssue'
 
 class App extends Component {
 
@@ -23,12 +23,19 @@ class App extends Component {
       isPaneOpen: false
     }
 
+    this.paneClosedHandler = this.paneClosedHandler.bind(this)
     this.nodeClickHandler = this.nodeClickHandler.bind(this)
 
     var self = this
 
     AuthService.auth().then((result) => {
       self.executeQuery()
+    })
+  }
+
+  paneClosedHandler() {
+    this.setState({
+      isPaneOpen: false
     })
   }
 
@@ -41,9 +48,10 @@ class App extends Component {
     })
   }
 
-  nodeClickHandler() {
+  nodeClickHandler(data) {
     this.setState({
-      isPaneOpen: true
+      isPaneOpen: true,
+      paneDataObject: data
     })
   }
 
@@ -56,7 +64,7 @@ class App extends Component {
 
         <Container fluid={true}>
 
-          <Row>
+          <Row style={{overflowX: 'scroll'}}>
             <Col>
               <Switch>
                 <Route exact path="/">
@@ -78,25 +86,14 @@ class App extends Component {
                   </Switch>
                 </Route>
               </Switch>
-              <Row><Col>egre</Col></Row>
-
-
-
             </Col>
           </Row>
 
         </Container>
 
+        <JiraIssue display={this.state.isPaneOpen} dataObject={this.state.paneDataObject} paneClosedHandler={this.paneClosedHandler} />
 
-        <SlidingPane
-          closeIcon={<div>Some div containing custom close icon.</div>}
-          isOpen={this.state.isPaneOpen}
-          title='Hey, it is optional pane title.  I can be React component too.'
-          from='right'
-          width='700px'
-          onRequestClose={() => this.setState({ isPaneOpen: false })}>
-          <div>And I am pane content on left.</div>
-        </SlidingPane>
+        
 
 
 
