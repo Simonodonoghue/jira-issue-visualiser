@@ -9,10 +9,24 @@ function executeJiraQuery(jql) {
 
         Http.open("POST", url, true);
 
+        /* fields to display:
+            1. Assignee
+            2. Original Estimate
+            3. Time tracking
+            4. Description
+            5. Comments
+            6. Due Date
+            7. Priority
+            8. Last Updated
+            9. Title
+            10. Key
+            11. Status
+        */
+
         Http.send(JSON.stringify({
             jql: jql,
             access_token: AuthService.getAccessToken(),
-            fields: "project,issuelinks,status,issuetype,subtasks"
+            fields: "project,issuelinks,status,issuetype,subtasks,summary,comment,priority,assignee,description,duedate,updated"
         }))
 
         Http.onreadystatechange = (e) => {

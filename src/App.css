@@ -53,9 +53,12 @@
   width: 100%;
 }
 
-.nav-link.active {
-  background-color:rgb(222, 235, 255, 0.3)
+.spinner-border {
+  top: 50%;
+  left: 50%;
+  position: fixed;
 }
+
 
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }

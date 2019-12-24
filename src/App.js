@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import 'react-sliding-pane/dist/react-sliding-pane.css';
-import { Navbar, Nav, Container, Row, Col } from 'react-bootstrap'
+import { Spinner, Container, Row, Col } from 'react-bootstrap'
 import { FaAudible } from 'react-icons/fa'
 import './App.css';
 import {
@@ -64,7 +64,7 @@ class App extends Component {
 
         <Container fluid={true}>
 
-          <Row style={{overflowX: 'scroll'}}>
+          <Row style={{ overflowX: 'hidden' }}>
             <Col>
               <Switch>
                 <Route exact path="/">
@@ -75,7 +75,23 @@ class App extends Component {
 
                 </Route>
                 <Route path="/visualiser">
-                  {this.state.jiraData ? <NodeVisualiser data={this.state.jiraData} nodeClickHandler={this.nodeClickHandler} /> : 'loading'}
+                  {() => {
+
+                    if (this.state.jiraData) {
+                      return (<NodeVisualiser data={this.state.jiraData} nodeClickHandler={this.nodeClickHandler} />)
+                    } else {
+                      return (
+                        <Container fluid={true}>
+                          <Row>
+                            <Col>
+                              <Spinner animation="border" />
+                            </Col>
+                          </Row>
+                        </Container>
+                      )
+                    }
+                  }
+                  }
                 </Route>
                 <Route path="/test">
                   Testing
@@ -93,7 +109,7 @@ class App extends Component {
 
         <JiraIssue display={this.state.isPaneOpen} dataObject={this.state.paneDataObject} paneClosedHandler={this.paneClosedHandler} />
 
-        
+
 
 
 
