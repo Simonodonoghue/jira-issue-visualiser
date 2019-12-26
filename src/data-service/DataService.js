@@ -26,12 +26,12 @@ function executeJiraQuery(jql) {
         Http.send(JSON.stringify({
             jql: jql,
             access_token: AuthService.getAccessToken(),
-            fields: "project,issuelinks,status,issuetype,subtasks,summary,comment,priority,assignee,description,duedate,updated"
+            fields: "project,issuelinks,status,issuetype,subtasks,summary,comment,priority,assignee,description,duedate,updated,worklog,timeoriginalestimate"
         }))
 
         Http.onreadystatechange = (e) => {
             if (Http.readyState == 4 && Http.status == 200) {
-                console.log(Http.responseText);
+                //console.log(Http.responseText);
                 resolve(JSON.parse(Http.responseText))
             }
         }

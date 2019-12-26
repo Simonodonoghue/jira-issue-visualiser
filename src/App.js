@@ -14,6 +14,7 @@ import AuthService from './auth-service/AuthService'
 import NavigationBar from './navigation-bar/NavigationBar'
 import NodeVisualiser from './node-visualiser/NodeVisualiser'
 import JiraIssue from './jira-issue/JiraIssue'
+import ProjectCharts from './project-charts/ProjectCharts'
 
 class App extends Component {
 
@@ -93,13 +94,24 @@ class App extends Component {
                   }
                   }
                 </Route>
-                <Route path="/test">
-                  Testing
-                  <Switch>
-                    <Route path="/test/new">
-                      Some sub route
-                      </Route>
-                  </Switch>
+                <Route path="/charts">
+                  {() => {
+
+                    if (this.state.jiraData) {
+                      return (<ProjectCharts issues={this.state.jiraData.issues} />)
+                    } else {
+                      return (
+                        <Container fluid={true}>
+                          <Row>
+                            <Col>
+                              <Spinner animation="border" />
+                            </Col>
+                          </Row>
+                        </Container>
+                      )
+                    }
+                  }
+                  }
                 </Route>
               </Switch>
             </Col>
