@@ -23,7 +23,7 @@ function auth() {
                 
             }
         } else if (localStorage.getItem('jira-access-token')) {
-            resolve(true)
+            resolve(false)
         } else {
             window.location = 'https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=IbpP46v0z5mLlBLgI2CStabBldUwT9P0&scope=read%3Ajira-user%20read%3Ajira-work&redirect_uri=http%3A%2F%2Flocalhost%3A3000&state=${YOUR_USER_BOUND_VALUE}&response_type=code&prompt=consent'
         }

@@ -15,6 +15,7 @@ import NavigationBar from './navigation-bar/NavigationBar'
 import NodeVisualiser from './node-visualiser/NodeVisualiser'
 import JiraIssue from './jira-issue/JiraIssue'
 import ProjectCharts from './project-charts/ProjectCharts'
+import { withRouter } from "react-router-dom";
 
 class App extends Component {
 
@@ -30,6 +31,9 @@ class App extends Component {
     var self = this
 
     AuthService.auth().then((result) => {
+      if (result) {
+        self.props.history.push('/');
+      }
       self.executeQuery()
     })
   }
@@ -41,11 +45,20 @@ class App extends Component {
   }
 
   executeQuery() {
-    var jql = prompt("Please enter a JQL URL");
-    DataService.executeJiraQuery(jql).then((result) => {
+    var selectedProject = sessionStorage.getItem("selectedProject")
+    var self = this
+
+    if (!selectedProject) {
+      sessionStorage.setItem("selectedProject", prompt("Please enter a JQL URL"))
+    }
+
+    DataService.executeJiraQuery(sessionStorage.getItem("selectedProject")).then((result) => {
       this.setState({
         jiraData: result
       })
+
+      self.props.history.push('/charts');
+
     })
   }
 
@@ -98,7 +111,14 @@ class App extends Component {
                   {() => {
 
                     if (this.state.jiraData) {
-                      return (<ProjectCharts issues={this.state.jiraData.issues} />)
+                      return (
+                        <Container fluid={true}>
+                          <Row>
+                            <Col>
+                              <ProjectCharts issues={this.state.jiraData.issues} />
+                            </Col>
+                          </Row>
+                        </Container>)
                     } else {
                       return (
                         <Container fluid={true}>
@@ -131,4 +151,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withRouter(App);
