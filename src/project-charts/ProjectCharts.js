@@ -81,10 +81,10 @@ class ProjectCharts extends Component {
         var self = this
         var chartData = []
 
-        Object.keys(this.state.totalCompletedWork).forEach(function (series) {
+        Object.keys(this.state.totalCompletedWork).forEach(function (series, index) {
             // this is the series
             var seriesArray = {
-                name: series,
+                name: series == 'total'?'total':'Person ' + index.toString(),
                 data: []
             }
 

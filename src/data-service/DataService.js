@@ -4,7 +4,7 @@ function executeJiraQuery(jql) {
 
     return new Promise(function (resolve, reject) {
         var Http = new XMLHttpRequest();
-        
+
         var url = 'https://jok6vsojnh.execute-api.eu-west-2.amazonaws.com/default/JiraNodeVisualiser-Query';
 
         Http.open("POST", url, true);
@@ -23,18 +23,21 @@ function executeJiraQuery(jql) {
             11. Status
         */
 
-        Http.send(JSON.stringify({
-            jql: jql,
-            access_token: AuthService.getAccessToken(),
-            fields: "project,issuelinks,status,issuetype,subtasks,summary,comment,priority,assignee,description,duedate,updated,worklog,timeoriginalestimate"
-        }))
+        AuthService.getAccessToken().then(function (token) {
+            Http.send(JSON.stringify({
+                jql: jql,
+                access_token: token,
+                fields: "project,issuelinks,status,issuetype,subtasks,summary,comment,priority,assignee,description,duedate,updated,worklog,timeoriginalestimate"
+            }))
 
-        Http.onreadystatechange = (e) => {
-            if (Http.readyState == 4 && Http.status == 200) {
-                //console.log(Http.responseText);
-                resolve(JSON.parse(Http.responseText))
+            Http.onreadystatechange = (e) => {
+                if (Http.readyState == 4 && Http.status == 200) {
+                    //console.log(Http.responseText);
+                    resolve(JSON.parse(Http.responseText))
+                }
             }
-        }
+        })
+
 
     })
 
