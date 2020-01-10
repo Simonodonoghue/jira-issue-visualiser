@@ -6,6 +6,17 @@ import './JiraIssue.css';
 
 class JiraIssue extends Component {
 
+    calculateCompletion(fields) {
+
+        var completed = 0
+
+        fields.worklog.worklogs.forEach(function(worklog) {
+            completed += worklog.timeSpentSeconds
+        })
+
+        return (completed / fields.timeoriginalestimate) * 100
+    }
+
     render() {
 
         /* fields to display:
@@ -101,7 +112,7 @@ class JiraIssue extends Component {
                         </Row>
                         <Row className='mb-3'>
                             <Col>
-                                <ProgressBar now={60} label={'12hrs'} />
+                                <ProgressBar now={this.calculateCompletion(this.props.dataObject.fields)} label={'12hrs'} />
                             </Col>
                         </Row>
                         <Row>

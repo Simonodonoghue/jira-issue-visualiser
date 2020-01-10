@@ -84,7 +84,7 @@ class ProjectCharts extends Component {
         Object.keys(this.state.totalCompletedWork).forEach(function (series, index) {
             // this is the series
             var seriesArray = {
-                name: series == 'total'?'total':'Person ' + index.toString(),
+                name: series,
                 data: []
             }
 

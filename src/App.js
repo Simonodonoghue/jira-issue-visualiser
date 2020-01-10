@@ -16,6 +16,8 @@ import NodeVisualiser from './node-visualiser/NodeVisualiser'
 import JiraIssue from './jira-issue/JiraIssue'
 import ProjectCharts from './project-charts/ProjectCharts'
 import { withRouter } from "react-router-dom";
+import Settings from './settings/Settings';
+import SelectProject from './select-project/SelectProject'
 
 class App extends Component {
 
@@ -57,7 +59,7 @@ class App extends Component {
         jiraData: result
       })
 
-      self.props.history.push('/charts');
+      self.props.history.push('/');
 
     })
   }
@@ -82,11 +84,9 @@ class App extends Component {
             <Col>
               <Switch>
                 <Route exact path="/">
-                  <p className="App-intro">
-                    To get started, edit <code>src/App.js</code> and save to reload.
-                    </p>
-                  <button onClick={() => this.setState({ isPaneOpen: true })}>Click me to open right pane!</button>
-
+                  <Container>
+                    <SelectProject />
+                  </Container>
                 </Route>
                 <Route path="/visualiser">
                   {() => {
@@ -130,6 +130,12 @@ class App extends Component {
                         </Container>
                       )
                     }
+                  }
+                  }
+                </Route>
+                <Route path="/settings">
+                  {() => {
+                    return <Settings />
                   }
                   }
                 </Route>
