@@ -42,7 +42,7 @@ class ProjectCharts extends Component {
             }
 
             issue.fields.worklog.worklogs.forEach(function (worklog) {
-                
+
                 // add to total
                 if (!(new Date(Date.parse(worklog.started)).toLocaleDateString('en-UK', options) in totalCompletedWork.total)) {
                     totalCompletedWork['total'][new Date(Date.parse(worklog.started)).toLocaleDateString('en-UK', options)] = 0
@@ -121,19 +121,22 @@ class ProjectCharts extends Component {
             })
         })
 
-        chartData.push({
-            name: "planned",
-            data: [
-                {
-                    x: chartData[0].data[0].x,
-                    y: 0
-                },
-                {
-                    x: chartData[0].data[chartData[0].data.length - 1].x,
-                    y: this.state.totalEstimatedWork
-                }
-            ]
-        })
+        // has any work been planned?
+        if (chartData[0].data.length > 0) {
+            chartData.push({
+                name: "planned",
+                data: [
+                    {
+                        x: chartData[0].data[0].x,
+                        y: 0
+                    },
+                    {
+                        x: chartData[0].data[chartData[0].data.length - 1].x,
+                        y: this.state.totalEstimatedWork
+                    }
+                ]
+            })
+        }
 
 
         var options = {

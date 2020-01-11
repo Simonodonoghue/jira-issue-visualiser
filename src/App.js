@@ -29,6 +29,8 @@ class App extends Component {
 
     this.paneClosedHandler = this.paneClosedHandler.bind(this)
     this.nodeClickHandler = this.nodeClickHandler.bind(this)
+    this.projectSelectedHandler = this.projectSelectedHandler.bind(this)
+
 
     var self = this
 
@@ -36,7 +38,10 @@ class App extends Component {
       if (result) {
         self.props.history.push('/');
       }
-      self.executeQuery()
+
+      if (sessionStorage.getItem('selectedProject')) {
+        self.executeQuery()
+      }
     })
   }
 
@@ -46,15 +51,15 @@ class App extends Component {
     })
   }
 
+  projectSelectedHandler(project) {
+    sessionStorage.setItem('selectedProject', project)
+    this.executeQuery()
+  }
+
   executeQuery() {
-    var selectedProject = sessionStorage.getItem("selectedProject")
     var self = this
 
-    if (!selectedProject) {
-      sessionStorage.setItem("selectedProject", prompt("Please enter a JQL URL"))
-    }
-
-    DataService.executeJiraQuery(sessionStorage.getItem("selectedProject")).then((result) => {
+    DataService.executeJiraQuery('project = ' + sessionStorage.getItem("selectedProject")).then((result) => {
       this.setState({
         jiraData: result
       })
@@ -85,7 +90,7 @@ class App extends Component {
               <Switch>
                 <Route exact path="/">
                   <Container>
-                    <SelectProject />
+                    <SelectProject projectSelectedHandler={this.projectSelectedHandler} />
                   </Container>
                 </Route>
                 <Route path="/visualiser">

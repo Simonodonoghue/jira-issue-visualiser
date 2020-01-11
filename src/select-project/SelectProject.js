@@ -18,20 +18,52 @@ class SelectProject extends Component {
             console.log("done")
         })
 
+        this.projectSelected = this.projectSelected.bind(this);
+
+
+    }
+
+    projectSelected(item) {
+        console.log("project selected")
+        this.props.projectSelectedHandler(item.key)
     }
 
     render() {
 
         var projects = []
 
+        var self = this
+
         if (this.state && this.state.projects) {
             this.state.projects.projects.forEach(function (project) {
-                projects.push(<span>{project.name}</span>)
+                projects.push(
+
+                    <Col sm="3" className="project-container" onClick={() => {
+                        console.log("selected")
+                        self.projectSelected(project)
+                    }}>
+
+                        <Col className="project">
+                            <Row>
+                                <Col>
+                                    {project.name}
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>
+                                    <img style={{ borderRadius: '50%' }} src={project.avatarUrls['32x32']} />
+                                </Col>
+                            </Row>
+
+                        </Col>
+
+
+                    </Col>)
             })
         }
 
 
-        return (<div>{projects}</div>)
+        return (<Row>{projects}</Row>)
 
     }
 

@@ -1,0 +1,11 @@
+.project-container {
+    height: 180px;
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
+
+.project {
+    width: 100%;
+    height: 180px;
+    background-color: lightgray;
+}
