@@ -24,7 +24,8 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      isPaneOpen: false
+      isPaneOpen: false,
+      isAuthd: false
     }
 
     this.paneClosedHandler = this.paneClosedHandler.bind(this)
@@ -35,13 +36,18 @@ class App extends Component {
     var self = this
 
     AuthService.auth().then((result) => {
-      if (result) {
-        self.props.history.push('/');
-      }
+      //if (result) {
+      self.props.history.push('/');
+      this.setState({
+        isAuthd: true
+      })
 
       if (sessionStorage.getItem('selectedProject')) {
-        self.executeQuery()
+        this.executeQuery()
       }
+      //}
+
+
     })
   }
 
@@ -77,88 +83,90 @@ class App extends Component {
   }
 
   render() {
-    return (
 
-      <div>
+    if (this.state.isAuthd) {
 
-        <NavigationBar />
+      return (
 
-        <Container fluid={true}>
+        <div>
 
-          <Row style={{ overflowX: 'hidden' }}>
-            <Col>
-              <Switch>
-                <Route exact path="/">
-                  <Container>
-                    <SelectProject projectSelectedHandler={this.projectSelectedHandler} />
-                  </Container>
-                </Route>
-                <Route path="/visualiser">
-                  {() => {
+          <NavigationBar />
 
-                    if (this.state.jiraData) {
-                      return (<NodeVisualiser data={this.state.jiraData} nodeClickHandler={this.nodeClickHandler} />)
-                    } else {
-                      return (
-                        <Container fluid={true}>
-                          <Row>
-                            <Col>
-                              <Spinner animation="border" />
-                            </Col>
-                          </Row>
-                        </Container>
-                      )
+          <Container fluid={true}>
+
+            <Row style={{ overflowX: 'hidden' }}>
+              <Col>
+                <Switch>
+                  <Route exact path="/">
+                    <Container>
+                      <SelectProject projectSelectedHandler={this.projectSelectedHandler} />
+                    </Container>
+                  </Route>
+                  <Route path="/visualiser">
+                    {() => {
+
+                      if (this.state.jiraData) {
+                        return (<NodeVisualiser data={this.state.jiraData} nodeClickHandler={this.nodeClickHandler} />)
+                      } else {
+                        return (
+                          <Container fluid={true}>
+                            <Row>
+                              <Col>
+                                <Spinner animation="border" />
+                              </Col>
+                            </Row>
+                          </Container>
+                        )
+                      }
                     }
-                  }
-                  }
-                </Route>
-                <Route path="/charts">
-                  {() => {
-
-                    if (this.state.jiraData) {
-                      return (
-                        <Container fluid={true}>
-                          <Row>
-                            <Col>
-                              <ProjectCharts issues={this.state.jiraData.issues} />
-                            </Col>
-                          </Row>
-                        </Container>)
-                    } else {
-                      return (
-                        <Container fluid={true}>
-                          <Row>
-                            <Col>
-                              <Spinner animation="border" />
-                            </Col>
-                          </Row>
-                        </Container>
-                      )
                     }
-                  }
-                  }
-                </Route>
-                <Route path="/settings">
-                  {() => {
-                    return <Settings />
-                  }
-                  }
-                </Route>
-              </Switch>
-            </Col>
-          </Row>
+                  </Route>
+                  <Route path="/charts">
+                    {() => {
 
-        </Container>
+                      if (this.state.jiraData) {
+                        return (
+                          <Container fluid={true}>
+                            <Row>
+                              <Col>
+                                <ProjectCharts issues={this.state.jiraData.issues} />
+                              </Col>
+                            </Row>
+                          </Container>)
+                      } else {
+                        return (
+                          <Container fluid={true}>
+                            <Row>
+                              <Col>
+                                <Spinner animation="border" />
+                              </Col>
+                            </Row>
+                          </Container>
+                        )
+                      }
+                    }
+                    }
+                  </Route>
+                  <Route path="/settings">
+                    {() => {
+                      return <Settings />
+                    }
+                    }
+                  </Route>
+                </Switch>
+              </Col>
+            </Row>
 
-        <JiraIssue display={this.state.isPaneOpen} dataObject={this.state.paneDataObject} paneClosedHandler={this.paneClosedHandler} />
+          </Container>
 
+          <JiraIssue display={this.state.isPaneOpen} dataObject={this.state.paneDataObject} paneClosedHandler={this.paneClosedHandler} />
+        </div>
 
+      );
+    } else {
+      return (<div>loading</div>)
+    }
 
-
-
-      </div>
-
-    );
   }
 }
 

@@ -9,7 +9,7 @@ class SelectProject extends Component {
 
     constructor(props) {
         super(props)
-
+        
         DataService.executeGetProjects().then((result) => {
             this.setState({
                 projects: result
@@ -24,7 +24,6 @@ class SelectProject extends Component {
     }
 
     projectSelected(item) {
-        console.log("project selected")
         this.props.projectSelectedHandler(item.key)
     }
 
