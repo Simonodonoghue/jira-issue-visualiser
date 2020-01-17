@@ -1,11 +1,12 @@
 import AuthService from '../auth-service/AuthService'
+var config = require('../../config/config').config
 
 function executeJiraQuery(jql) {
 
     return new Promise(function (resolve, reject) {
         var Http = new XMLHttpRequest();
 
-        var url = 'https://jok6vsojnh.execute-api.eu-west-2.amazonaws.com/default/JiraNodeVisualiser-Query';
+        var url = config.QueryLambdaURL;
 
         Http.open("POST", url, true);
 
@@ -48,7 +49,7 @@ function executeGetProjects() {
     return new Promise(function (resolve, reject) {
         var Http = new XMLHttpRequest();
 
-        var url = 'https://jok6vsojnh.execute-api.eu-west-2.amazonaws.com/default/JiraNodeVisualiser-Query';
+        var url = config.QueryLambdaURL;
 
         Http.open("POST", url, true);
 

@@ -7,6 +7,9 @@ import {
   BrowserRouter as Router
 } from "react-router-dom";
 
+import '../assets/fonts/GloberDemo-SemiBold.otf';
+import '../assets/fonts/GloberDemo-Thin.otf'
+
 ReactDOM.render((
   <Router>
     <App />

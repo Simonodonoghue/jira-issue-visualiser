@@ -59,8 +59,28 @@
   position: fixed;
 }
 
+.project .spinner-border {
+  position: relative;
+  top: 45%;
+  left: 0%;
+}
+
 
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+p {
+  font-size: 23px;
+  font-family: Glober-Thin;
+}
+
+h1 {
+  font-family: Glober-SemiBold;
+  color: #172b4d;
+}
+
+h2 {
+  font-family: Glober-Thin;
 }

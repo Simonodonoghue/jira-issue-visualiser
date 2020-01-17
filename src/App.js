@@ -42,9 +42,6 @@ class App extends Component {
         isAuthd: true
       })
 
-      if (sessionStorage.getItem('selectedProject')) {
-        this.executeQuery()
-      }
       //}
 
 
@@ -58,19 +55,20 @@ class App extends Component {
   }
 
   projectSelectedHandler(project) {
-    sessionStorage.setItem('selectedProject', project)
-    this.executeQuery()
+    this.executeQuery(project)
   }
 
-  executeQuery() {
+  executeQuery(project) {
     var self = this
 
-    DataService.executeJiraQuery('project = ' + sessionStorage.getItem("selectedProject")).then((result) => {
+    DataService.executeJiraQuery('project = ' + project).then((result) => {
+      sessionStorage.setItem('selectedProject', project)
+      
       this.setState({
         jiraData: result
       })
 
-      self.props.history.push('/');
+      self.props.history.push('/visualiser');
 
     })
   }
@@ -98,9 +96,7 @@ class App extends Component {
               <Col>
                 <Switch>
                   <Route exact path="/">
-                    <Container>
                       <SelectProject projectSelectedHandler={this.projectSelectedHandler} />
-                    </Container>
                   </Route>
                   <Route path="/visualiser">
                     {() => {

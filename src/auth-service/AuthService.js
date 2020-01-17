@@ -1,4 +1,5 @@
 var moment = require('moment')
+var config = require('../../config/config').config
 
 function auth() {
 
@@ -10,7 +11,7 @@ function auth() {
         if (myParam) {
             // Send the code to lambda and swap it for an access token
             var Http = new XMLHttpRequest();
-            var url = 'https://jok6vsojnh.execute-api.eu-west-2.amazonaws.com/default/JiraNodeVisualiser-OAuth';
+            var url = config.OAuthLambdaURL;
             Http.open("POST", url, true);
             Http.send(JSON.stringify({
                 authCode: myParam,
@@ -34,7 +35,7 @@ function auth() {
         } else if (localStorage.getItem('jira-access-token')) {
             resolve(false)
         } else {
-            window.location = 'https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=IbpP46v0z5mLlBLgI2CStabBldUwT9P0&scope=read%3Ajira-user%20read%3Ajira-work%20offline_access&redirect_uri=' + window.location.protocol + '//' + window.location.hostname + ':' + window.location.port + '&state=${YOUR_USER_BOUND_VALUE}&response_type=code&prompt=consent'
+            window.location = config.AtlassianAuthURL
         }
     })
 
@@ -50,7 +51,7 @@ function getAccessToken() {
             if (moment().isAfter(moment(access_token.expire_after))) {
 
                 var Http = new XMLHttpRequest();
-                var url = 'https://h1uocsqi81.execute-api.eu-west-2.amazonaws.com/default/JiraNodeVisualiser-RefreshToken';
+                var url = config.RefreshTokenLambdaURL;
                 Http.open("POST", url, true);
                 Http.send(JSON.stringify({
                     refreshToken: localStorage.getItem('jira-refresh-token')
@@ -74,15 +75,10 @@ function getAccessToken() {
                 resolve(access_token.access_token)
             }
         } else {
-            reject()
+            window.location = config.AtlassianAuthURL
         }
 
     })
-
-
-
-
-    return JSON.parse(localStorage.getItem('jira-access-token')).access_token
 }
 
 
