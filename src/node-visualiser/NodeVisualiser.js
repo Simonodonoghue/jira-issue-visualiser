@@ -3,7 +3,7 @@ import { Navbar, Nav, Container, Row, Col } from 'react-bootstrap'
 import { FaAudible } from 'react-icons/fa'
 import './NodeVisualiser.css';
 import * as d3 from 'd3';
-import {event as currentEvent} from 'd3';
+import { event as currentEvent } from 'd3';
 import {
     Link
 } from "react-router-dom";
@@ -30,24 +30,16 @@ class NodeVisualiser extends Component {
             .attr("width", w)
             .attr("height", h);
 
-        var force = d3.layout.force()
-            .nodes(json.issues)
-            .gravity(.039)
-            .distance(20)
-            .charge(-220)
-            .size([w, h])
-            .start()
-
         var links = []
 
-        force.nodes().forEach(issue => {
+        json.issues.forEach(issue => {
             issue.fields.subtasks.forEach(subtask => {
                 // find the item in nodes
-                force.nodes().forEach(subtaskFind => {
+                json.issues.forEach(subtaskFind => {
                     if (subtaskFind.key == subtask.key) {
                         links.push({
-                            source: issue.index,
-                            target: subtaskFind.index
+                            source: issue.id,
+                            target: subtaskFind.id
                         })
                     }
                 })
@@ -56,11 +48,11 @@ class NodeVisualiser extends Component {
             issue.fields.issuelinks.forEach(issuelink => {
                 // find the item in nodes
                 if (issuelink.outwardIssue) {
-                    force.nodes().forEach(subtaskFind => {
+                    json.issues.forEach(subtaskFind => {
                         if (subtaskFind.key == issuelink.outwardIssue.key) {
                             links.push({
-                                source: issue.index,
-                                target: subtaskFind.index
+                                source: issue.id,
+                                target: subtaskFind.id
                             })
                         }
                     })
@@ -69,14 +61,19 @@ class NodeVisualiser extends Component {
             })
         });
 
-        force.links(links)
+        var force = d3.forceSimulation(json.issues)
+            .force("charge", d3.forceManyBody().strength(-3000))
+            .force("center", d3.forceCenter(w / 2, h / 2))
+            .force("x", d3.forceX(w / 2).strength(1))
+            .force("y", d3.forceY(h / 2).strength(1))
+            .force("link", d3.forceLink(links).id(function (d) { return d.id; })
+                .distance(50)
+                .strength(1))
+            .on("tick", tick);
 
-        force = force.start()
-
-        console.log(force.links())
 
         var link = vis.selectAll("line.link")
-            .data(force.links())
+            .data(links)
             .enter().append("svg:line")
             .attr("class", function (d) {
                 if (d.target.fields.status.name == 'To Do') {
@@ -87,15 +84,11 @@ class NodeVisualiser extends Component {
                     return "link-done"
                 }
             })
-            .attr("x1", function (d) { return d.source.x; })
-            .attr("y1", function (d) { return d.source.y; })
-            .attr("x2", function (d) { return d.target.x; })
-            .attr("y2", function (d) { return d.target.y; });
 
-        var node_drag = d3.behavior.drag()
+        /*var node_drag = d3.behavior.drag()
             .on("dragstart", dragstart)
             .on("drag", dragmove)
-            .on("dragend", dragend);
+            .on("dragend", dragend);*/
 
         function dragstart(d, i) {
             force.stop() // stops the force auto positioning before you start dragging
@@ -120,7 +113,7 @@ class NodeVisualiser extends Component {
             .data(json.issues)
             .enter().append("svg:g")
             .attr("class", "node")
-            .call(node_drag);
+        //    .call(node_drag);
 
         node.append("svg:image")
             .attr("class", "circle")
@@ -140,15 +133,16 @@ class NodeVisualiser extends Component {
             .attr("dy", ".35em")
             .text(function (d) { return d.key });
 
-        force.on("tick", tick);
 
         function tick() {
+            node.attr("transform", function (d) {
+                return "translate(" + d.x + "," + d.y + ")";
+            });
+
             link.attr("x1", function (d) { return d.source.x; })
                 .attr("y1", function (d) { return d.source.y; })
                 .attr("x2", function (d) { return d.target.x; })
                 .attr("y2", function (d) { return d.target.y; });
-
-            node.attr("transform", function (d) { return "translate(" + Math.max(radius, Math.min(w - radius, d.x)) + "," + Math.max(radius, Math.min(h - radius, d.y)) + ")"; });
         };
 
     }
