@@ -37,12 +37,19 @@ class App extends Component {
 
     AuthService.auth().then((result) => {
       //if (result) {
-      self.props.history.push('/');
       this.setState({
         isAuthd: true
       })
 
       //}
+
+      if (sessionStorage.getItem('selectedProject')) {
+        DataService.executeJiraQuery('project = ' + sessionStorage.getItem('selectedProject')).then((result) => {
+          this.setState({
+            jiraData: result
+          })
+        })
+      }
 
 
     })
@@ -63,7 +70,7 @@ class App extends Component {
 
     DataService.executeJiraQuery('project = ' + project).then((result) => {
       sessionStorage.setItem('selectedProject', project)
-      
+
       this.setState({
         jiraData: result
       })
@@ -96,7 +103,7 @@ class App extends Component {
               <Col>
                 <Switch>
                   <Route exact path="/">
-                      <SelectProject projectSelectedHandler={this.projectSelectedHandler} />
+                    <SelectProject projectSelectedHandler={this.projectSelectedHandler} />
                   </Route>
                   <Route path="/visualiser">
                     {() => {
@@ -122,13 +129,12 @@ class App extends Component {
 
                       if (this.state.jiraData) {
                         return (
-                          <Container fluid={true}>
-                            <Row>
-                              <Col>
-                                <ProjectCharts issues={this.state.jiraData.issues} />
-                              </Col>
-                            </Row>
-                          </Container>)
+                          <Row>
+                            <Col>
+                              <ProjectCharts issues={this.state.jiraData.issues} />
+                            </Col>
+                          </Row>
+                        )
                       } else {
                         return (
                           <Container fluid={true}>

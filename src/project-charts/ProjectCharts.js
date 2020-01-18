@@ -141,7 +141,8 @@ class ProjectCharts extends Component {
 
         var options = {
             chart: {
-                id: 'apexchart-example'
+                id: 'apexchart-example',
+                height: '100%'
             },
             title: {
                 text: "Completed to Planned Work",
