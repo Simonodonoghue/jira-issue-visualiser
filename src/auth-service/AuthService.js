@@ -81,8 +81,21 @@ function getAccessToken() {
     })
 }
 
+function isAuthenticated() {
+    if (localStorage.getItem('jira-access-token')) {
+        var access_token = JSON.parse(localStorage.getItem('jira-access-token'))
+
+        if (moment().isBefore(moment(access_token.expire_after))) {
+            return true
+        }
+    }
+
+    return false
+}
+
 
 module.exports = {
     auth: auth,
-    getAccessToken: getAccessToken
+    getAccessToken: getAccessToken,
+    isAuthenticated: isAuthenticated
 }

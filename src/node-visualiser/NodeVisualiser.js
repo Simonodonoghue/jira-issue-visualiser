@@ -62,7 +62,7 @@ class NodeVisualiser extends Component {
         });
 
         var force = d3.forceSimulation(json.issues)
-            .force("charge", d3.forceManyBody().strength(-3000))
+            .force("charge", d3.forceManyBody().strength(-1000))
             .force("center", d3.forceCenter(w / 2, h / 2))
             .force("x", d3.forceX(w / 2).strength(1))
             .force("y", d3.forceY(h / 2).strength(1))

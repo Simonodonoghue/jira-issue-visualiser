@@ -36,12 +36,14 @@ class App extends Component {
     var self = this
 
     AuthService.auth().then((result) => {
-      //if (result) {
+      
       this.setState({
         isAuthd: true
       })
 
-      //}
+      if (result) {
+        self.props.history.push('/');
+      } 
 
       if (sessionStorage.getItem('selectedProject')) {
         DataService.executeJiraQuery('project = ' + sessionStorage.getItem('selectedProject')).then((result) => {

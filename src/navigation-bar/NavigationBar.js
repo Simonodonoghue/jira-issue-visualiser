@@ -5,6 +5,7 @@ import './NavigationBar.css';
 import {
   NavLink, Switch, Route
 } from "react-router-dom";
+import AuthService from '../auth-service/AuthService'
 
 class NavigationBar extends Component {
 
@@ -18,6 +19,10 @@ class NavigationBar extends Component {
         <Nav.Link as={NavLink} to="/settings"><IoIosCog style={{ margin: 'auto', display: 'block' }} color='white' size={32} /></Nav.Link>
       </Nav>
       )
+    } else if (AuthService.isAuthenticated) {
+      return (<Nav className="flex-column">
+        <Nav.Link as={NavLink} to="/settings"><IoIosCog style={{ margin: 'auto', display: 'block' }} color='white' size={32} /></Nav.Link>
+      </Nav>)
     } else {
       return (<div></div>)
     }
