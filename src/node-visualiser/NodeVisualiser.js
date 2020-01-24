@@ -84,6 +84,12 @@ class NodeVisualiser extends Component {
                 }
             })
 
+        /*var node_drag = d3.behavior.drag()
+            .on("dragstart", dragstart)
+            .on("drag", dragmove)
+            .on("dragend", dragend);*/
+
+
         var node = vis.selectAll("g.node")
             .data(json.issues)
             .enter().append("svg:g")
@@ -132,6 +138,7 @@ class NodeVisualiser extends Component {
         }
 
         function dragstarted() {
+            if (!d3.event.active) force.alphaTarget(0.3).restart();
             d3.event.subject.fx = d3.event.subject.x;
             d3.event.subject.fy = d3.event.subject.y;
         }
