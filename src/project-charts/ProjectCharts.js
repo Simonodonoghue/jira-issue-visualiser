@@ -141,8 +141,7 @@ class ProjectCharts extends Component {
 
         var options = {
             chart: {
-                id: 'apexchart-example',
-                height: '100%'
+                id: 'apexchart-example'
             },
             title: {
                 text: "Completed to Planned Work",
@@ -172,7 +171,7 @@ class ProjectCharts extends Component {
         return (
 
             <div>
-                <Chart options={options} series={chartData} type="line" width='100%' />
+                <Chart options={options} series={chartData} type="line" width='70%' />
             </div >
 
         );

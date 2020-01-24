@@ -71,7 +71,6 @@ class NodeVisualiser extends Component {
                 .strength(1))
             .on("tick", tick);
 
-
         var link = vis.selectAll("line.link")
             .data(links)
             .enter().append("svg:line")
@@ -84,30 +83,6 @@ class NodeVisualiser extends Component {
                     return "link-done"
                 }
             })
-
-        /*var node_drag = d3.behavior.drag()
-            .on("dragstart", dragstart)
-            .on("drag", dragmove)
-            .on("dragend", dragend);*/
-
-        function dragstart(d, i) {
-            force.stop() // stops the force auto positioning before you start dragging
-        }
-
-        function dragmove(d, i) {
-            d.px += currentEvent.dx;
-            d.py += currentEvent.dy;
-            d.x += currentEvent.dx;
-            d.y += currentEvent.dy;
-            tick(); // this is the key to make it work together with updating both px,py,x,y on d !
-        }
-
-        function dragend(d, i) {
-            d.fixed = true; // of course set the node to fixed so the force doesn't include the node in its auto positioning stuff
-            tick();
-            force.resume();
-        }
-
 
         var node = vis.selectAll("g.node")
             .data(json.issues)
@@ -144,6 +119,33 @@ class NodeVisualiser extends Component {
                 .attr("x2", function (d) { return d.target.x; })
                 .attr("y2", function (d) { return d.target.y; });
         };
+
+        node
+            .call(d3.drag()
+                .subject(dragsubject)
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended));
+
+        function dragsubject() {
+            return force.find(d3.event.x, d3.event.y);
+        }
+
+        function dragstarted() {
+            d3.event.subject.fx = d3.event.subject.x;
+            d3.event.subject.fy = d3.event.subject.y;
+        }
+
+        function dragged() {
+            d3.event.subject.fx = d3.event.x;
+            d3.event.subject.fy = d3.event.y;
+        }
+
+        function dragended() {
+            if (!d3.event.active) force.alphaTarget(0);
+            d3.event.subject.fx = null;
+            d3.event.subject.fy = null;
+        }
 
     }
 

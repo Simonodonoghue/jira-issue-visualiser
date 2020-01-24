@@ -41,6 +41,11 @@ class SelectProject extends Component {
             this.state.projects.projects.forEach(function (project) {
 
                 var projectCard;
+                var projectClass = "project";
+
+                if (sessionStorage.getItem('selectedProject') == project.key) {
+                    projectClass = "project selected"
+                }
 
                 if (self.state.selectedProject && project.key == self.state.selectedProject) {
                     // we need to show the loader
@@ -76,7 +81,7 @@ class SelectProject extends Component {
                         self.projectSelected(project)
                     }}>
 
-                        <Col className="project">
+                        <Col className={projectClass}>
                             {projectCard}
                         </Col>
 

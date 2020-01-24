@@ -12,7 +12,10 @@
     border-bottom-style: solid;
     background-color: rgb(248, 248, 248);
 }
+.project.selected {
+    background-color: red;
+}
 
-.project:hover {
+.project:hover:not(.selected) {
     background-color: rgb(221, 221, 221);
 }
