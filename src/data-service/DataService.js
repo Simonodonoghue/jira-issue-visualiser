@@ -89,7 +89,7 @@ function getCards(boardId) {
     return new Promise(function (resolve, reject) {
         var Http = new XMLHttpRequest();
 
-        var url = "https://api.trello.com/1/boards/591b615d0039a98cfa259b15/cards?key=752171e46c0819c7346de816860c9086&token=" + localStorage.getItem("trello-token");
+        var url = "https://api.trello.com/1/boards/591b615d0039a98cfa259b15/cards?key=752171e46c0819c7346de816860c9086&token=" + AuthService.getTrelloToken();
 
         Http.open("GET", url, true);
 

@@ -10,7 +10,7 @@ import {
 import DataService from '../data-service/DataService'
 import AuthService from '../auth-service/AuthService'
 
-import NavigationBar from '../jira/navigation-bar/JiraNavigationBar'
+import JiraNavigationBar from '../jira/navigation-bar/JiraNavigationBar'
 import NodeVisualiser from '../jira/node-visualiser/NodeVisualiser'
 import JiraIssue from '../jira/jira-issue/JiraIssue'
 import ProjectCharts from '../jira/project-charts/ProjectCharts'
@@ -91,80 +91,85 @@ class JiraManager extends Component {
 
     render() {
 
-        return (
+        if (this.state.isAuthd) {
+            return (
 
-            <div>
+                <div>
 
-                <NavigationBar />
+                    <JiraNavigationBar />
 
-                <Container fluid={true}>
+                    <Container fluid={true}>
 
-                    <Row style={{ overflowX: 'hidden' }}>
-                        <Col>
-                            <Switch>
-                                <Route exact path="/jira">
-                                    <SelectProject projectSelectedHandler={this.projectSelectedHandler} />
-                                </Route>
-                                <Route path="/jira/visualiser">
-                                    {() => {
+                        <Row style={{ overflowX: 'hidden' }}>
+                            <Col>
+                                <Switch>
+                                    <Route exact path="/jira">
+                                        <SelectProject projectSelectedHandler={this.projectSelectedHandler} />
+                                    </Route>
+                                    <Route path="/jira/visualiser">
+                                        {() => {
 
-                                        if (this.state.jiraData) {
-                                            return (<NodeVisualiser data={this.state.jiraData} nodeClickHandler={this.nodeClickHandler} />)
-                                        } else {
-                                            return (
-                                                <Container fluid={true}>
+                                            if (this.state.jiraData) {
+                                                return (<NodeVisualiser data={this.state.jiraData} nodeClickHandler={this.nodeClickHandler} />)
+                                            } else {
+                                                return (
+                                                    <Container fluid={true}>
+                                                        <Row>
+                                                            <Col>
+                                                                <Spinner animation="border" />
+                                                            </Col>
+                                                        </Row>
+                                                    </Container>
+                                                )
+                                            }
+                                        }
+                                        }
+                                    </Route>
+                                    <Route path="/jira/charts">
+                                        {() => {
+
+                                            if (this.state.jiraData) {
+                                                return (
                                                     <Row>
                                                         <Col>
-                                                            <Spinner animation="border" />
+                                                            <ProjectCharts issues={this.state.jiraData.issues} />
                                                         </Col>
                                                     </Row>
-                                                </Container>
-                                            )
+                                                )
+                                            } else {
+                                                return (
+                                                    <Container fluid={true}>
+                                                        <Row>
+                                                            <Col>
+                                                                <Spinner animation="border" />
+                                                            </Col>
+                                                        </Row>
+                                                    </Container>
+                                                )
+                                            }
                                         }
-                                    }
-                                    }
-                                </Route>
-                                <Route path="/jira/charts">
-                                    {() => {
-
-                                        if (this.state.jiraData) {
-                                            return (
-                                                <Row>
-                                                    <Col>
-                                                        <ProjectCharts issues={this.state.jiraData.issues} />
-                                                    </Col>
-                                                </Row>
-                                            )
-                                        } else {
-                                            return (
-                                                <Container fluid={true}>
-                                                    <Row>
-                                                        <Col>
-                                                            <Spinner animation="border" />
-                                                        </Col>
-                                                    </Row>
-                                                </Container>
-                                            )
                                         }
-                                    }
-                                    }
-                                </Route>
-                                <Route path="/jira/settings">
-                                    {() => {
-                                        return <Settings />
-                                    }
-                                    }
-                                </Route>
-                            </Switch>
-                        </Col>
-                    </Row>
+                                    </Route>
+                                    <Route path="/jira/settings">
+                                        {() => {
+                                            return <Settings />
+                                        }
+                                        }
+                                    </Route>
+                                </Switch>
+                            </Col>
+                        </Row>
 
-                </Container>
+                    </Container>
 
-                <JiraIssue display={this.state.isPaneOpen} dataObject={this.state.paneDataObject} paneClosedHandler={this.paneClosedHandler} />
-            </div>
+                    <JiraIssue display={this.state.isPaneOpen} dataObject={this.state.paneDataObject} paneClosedHandler={this.paneClosedHandler} />
+                </div>
 
-        );
+            );
+        } else {
+            return (<div></div>)
+        }
+
 
     }
 }

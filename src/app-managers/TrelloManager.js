@@ -10,7 +10,7 @@ import {
 import DataService from '../data-service/DataService'
 import AuthService from '../auth-service/AuthService'
 
-import NavigationBar from '../jira/navigation-bar/JiraNavigationBar'
+import TrelloNavigationBar from '../trello/navigation-bar/TrelloNavigationBar'
 import NodeVisualiser from '../trello/node-visualiser/TrelloVisualiser'
 import JiraIssue from '../jira/jira-issue/JiraIssue'
 import ProjectCharts from '../jira/project-charts/ProjectCharts'
@@ -92,7 +92,7 @@ class TrelloManager extends Component {
 
             <div>
 
-                <NavigationBar />
+                <TrelloNavigationBar />
 
                 <Container fluid={true}>
 
