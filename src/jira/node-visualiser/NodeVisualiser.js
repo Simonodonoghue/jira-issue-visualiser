@@ -126,12 +126,11 @@ class NodeVisualiser extends Component {
                 .attr("y2", function (d) { return d.target.y; });
         };
 
-        node
-            .call(d3.drag()
-                .subject(dragsubject)
-                .on("start", dragstarted)
-                .on("drag", dragged)
-                .on("end", dragended));
+        node.call(d3.drag()
+            .subject(dragsubject)
+            .on("start", dragstarted)
+            .on("drag", dragged)
+            .on("end", dragended));
 
         function dragsubject() {
             return force.find(d3.event.x, d3.event.y);

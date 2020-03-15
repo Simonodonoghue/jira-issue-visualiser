@@ -17,6 +17,22 @@ class JiraIssue extends Component {
         return (completed / fields.timeoriginalestimate) * 100
     }
 
+    generateDescription() {
+        if (!this.props.dataObject.fields.description || this.props.dataObject.fields.description == "") {
+            return (
+                <span>
+                    There is no description
+                </span>
+            )
+        }
+
+        return (
+            <span>
+                {this.props.dataObject.fields.description}
+            </span>
+        )
+    }
+
     render() {
 
         /* fields to display:
@@ -40,16 +56,13 @@ class JiraIssue extends Component {
             if (this.props.dataObject.fields.comment.comments) {
                 this.props.dataObject.fields.comment.comments.forEach(function (item) {
                     comments.push((
-                        <Row>
+                        <Row className='mb-2 border-bottom pb-2'>
                             <Col>
                                 <Row>
-                                    <Col>
-                                        <img width='32' height='32' src={item.author.avatarUrls['32x32']} />
-                                    </Col>
-                                    <Col>
+                                    <Col className="pb-2">
+                                        <img width='32' height='32' style={{marginRight: '15px'}} src={item.author.avatarUrls['32x32']} />
                                         {item.author.displayName}
                                     </Col>
-
                                 </Row>
                                 <Row>
                                     <Col>
@@ -117,7 +130,7 @@ class JiraIssue extends Component {
                         </Row>
                         <Row>
                             <Col>
-                                {this.props.dataObject.fields.description}
+                                {this.generateDescription()}
                             </Col>
                         </Row>
                         <Row className='mb-3'>

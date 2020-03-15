@@ -8,168 +8,35 @@ import {
   Switch,
   Route
 } from "react-router-dom";
-import DataService from './data-service/DataService'
-import AuthService from './auth-service/AuthService'
 
-import NavigationBar from './navigation-bar/NavigationBar'
-import NodeVisualiser from './node-visualiser/NodeVisualiser'
-import JiraIssue from './jira-issue/JiraIssue'
-import ProjectCharts from './project-charts/ProjectCharts'
+
 import { withRouter } from "react-router-dom";
-import Settings from './settings/Settings';
-import SelectProject from './select-project/SelectProject'
+import ChooseService from './choose-service/ChooseService'
+import JiraManager from './app-managers/JiraManager';
+import TrelloManager from './app-managers/TrelloManager';
 
 class App extends Component {
 
   constructor(props) {
     super(props)
-    this.state = {
-      isPaneOpen: false,
-      isAuthd: false
-    }
-
-    this.paneClosedHandler = this.paneClosedHandler.bind(this)
-    this.nodeClickHandler = this.nodeClickHandler.bind(this)
-    this.projectSelectedHandler = this.projectSelectedHandler.bind(this)
-
-
-    var self = this
-
-    AuthService.auth().then((result) => {
-      
-      this.setState({
-        isAuthd: true
-      })
-
-      if (result) {
-        self.props.history.push('/');
-      } 
-
-      if (sessionStorage.getItem('selectedProject')) {
-        DataService.executeJiraQuery('project = ' + sessionStorage.getItem('selectedProject')).then((result) => {
-          this.setState({
-            jiraData: result
-          })
-        })
-      }
-
-
-    })
-  }
-
-  paneClosedHandler() {
-    this.setState({
-      isPaneOpen: false
-    })
-  }
-
-  projectSelectedHandler(project) {
-    this.executeQuery(project)
-  }
-
-  executeQuery(project) {
-    var self = this
-
-    DataService.executeJiraQuery('project = ' + project).then((result) => {
-      sessionStorage.setItem('selectedProject', project)
-
-      this.setState({
-        jiraData: result
-      })
-
-      self.props.history.push('/visualiser');
-
-    })
-  }
-
-  nodeClickHandler(data) {
-    this.setState({
-      isPaneOpen: true,
-      paneDataObject: data
-    })
   }
 
   render() {
 
-    if (this.state.isAuthd) {
+    return (
+      <Switch>
+        <Route exact path="/">
+          <ChooseService></ChooseService>
+        </Route>
+        <Route exact path="/jira*">
+          <JiraManager></JiraManager>
+        </Route>
+        <Route exact path="/trello*">
+          <TrelloManager></TrelloManager>
+        </Route>
 
-      return (
-
-        <div>
-
-          <NavigationBar />
-
-          <Container fluid={true}>
-
-            <Row style={{ overflowX: 'hidden' }}>
-              <Col>
-                <Switch>
-                  <Route exact path="/">
-                    <SelectProject projectSelectedHandler={this.projectSelectedHandler} />
-                  </Route>
-                  <Route path="/visualiser">
-                    {() => {
-
-                      if (this.state.jiraData) {
-                        return (<NodeVisualiser data={this.state.jiraData} nodeClickHandler={this.nodeClickHandler} />)
-                      } else {
-                        return (
-                          <Container fluid={true}>
-                            <Row>
-                              <Col>
-                                <Spinner animation="border" />
-                              </Col>
-                            </Row>
-                          </Container>
-                        )
-                      }
-                    }
-                    }
-                  </Route>
-                  <Route path="/charts">
-                    {() => {
-
-                      if (this.state.jiraData) {
-                        return (
-                          <Row>
-                            <Col>
-                              <ProjectCharts issues={this.state.jiraData.issues} />
-                            </Col>
-                          </Row>
-                        )
-                      } else {
-                        return (
-                          <Container fluid={true}>
-                            <Row>
-                              <Col>
-                                <Spinner animation="border" />
-                              </Col>
-                            </Row>
-                          </Container>
-                        )
-                      }
-                    }
-                    }
-                  </Route>
-                  <Route path="/settings">
-                    {() => {
-                      return <Settings />
-                    }
-                    }
-                  </Route>
-                </Switch>
-              </Col>
-            </Row>
-
-          </Container>
-
-          <JiraIssue display={this.state.isPaneOpen} dataObject={this.state.paneDataObject} paneClosedHandler={this.paneClosedHandler} />
-        </div>
-
-      );
-    } else {
-      return (<div>loading</div>)
-    }
+      </Switch>
+    )
 
   }
 }

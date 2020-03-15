@@ -3,7 +3,8 @@ import SlidingPane from 'react-sliding-pane';
 import { Container, Row, Col, Spinner, Badge } from 'react-bootstrap'
 import { IoIosAddCircleOutline, IoIosGitNetwork, IoIosPodium, IoIosCog } from 'react-icons/io'
 import './SelectProject.css';
-import DataService from '../data-service/DataService'
+import DataService from '../../data-service/DataService'
+import AuthService from '../../auth-service/AuthService'
 import { rgb } from 'd3';
 
 class SelectProject extends Component {

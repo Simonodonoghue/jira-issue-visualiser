@@ -8,7 +8,7 @@ import {
     Switch,
     Route
 } from "react-router-dom";
-import '../../node_modules/react-vis/dist/style.css';
+import '../../../node_modules/react-vis/dist/style.css';
 import Chart from 'react-apexcharts'
 import moment from 'moment';
 

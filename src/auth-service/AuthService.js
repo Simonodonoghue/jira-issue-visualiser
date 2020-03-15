@@ -1,20 +1,21 @@
 var moment = require('moment')
 var config = require('../../config/config').config
 
-function auth() {
+function handleJiraAuth() {
 
     // TODO - handle an expired token (integrate refresh tokens so the user isn't sent off for reauth)
     return new Promise(function (resolve, reject) {
         const urlParams = new URLSearchParams(window.location.search);
-        const myParam = urlParams.get('code');
+        const jiraParam = urlParams.get('code');
 
-        if (myParam) {
+
+        if (jiraParam) {
             // Send the code to lambda and swap it for an access token
             var Http = new XMLHttpRequest();
             var url = config.OAuthLambdaURL;
             Http.open("POST", url, true);
             Http.send(JSON.stringify({
-                authCode: myParam,
+                authCode: jiraParam,
                 redirect_uri: window.location.protocol + '//' + window.location.hostname + ':' + window.location.port
             }))
 
@@ -32,16 +33,39 @@ function auth() {
 
 
             }
-        } else if (localStorage.getItem('jira-access-token')) {
+        }
+        else if (localStorage.getItem('jira-access-token')) {
             resolve(false)
         } else {
-            window.location = config.AtlassianAuthURL
+            //window.location = config.AtlassianAuthURL
         }
     })
 
 }
 
-function getAccessToken() {
+function handleTrelloAuth() {
+    var authUrl = "https://api.trello.com/1/authorize?callback_method=fragment&return_url=http://localhost:3000/trello&scope=read&expiration=never&name=Test&key=752171e46c0819c7346de816860c9086&response_type=token"
+
+    return new Promise(function (resolve, reject) {
+        const trelloHash = location.hash.substr(1).split('=')[1];
+
+        if (trelloHash) {
+            localStorage.setItem('trello-token', trelloHash)
+            resolve()
+        } else if (localStorage.getItem('trello-token')) {
+            resolve()
+        } else {
+            window.location = authUrl
+        }
+    })
+
+}
+
+function getJiraRedirect() {
+    return config.AtlassianAuthURL
+}
+
+function getJiraAccessToken() {
     // Add checks in here to see if token expired, etc.
 
     return new Promise(function (resolve, reject) {
@@ -75,13 +99,13 @@ function getAccessToken() {
                 resolve(access_token.access_token)
             }
         } else {
-            window.location = config.AtlassianAuthURL
+            //window.location = config.AtlassianAuthURL
         }
 
     })
 }
 
-function isAuthenticated() {
+function isJiraAuthenticated() {
     if (localStorage.getItem('jira-access-token')) {
         var access_token = JSON.parse(localStorage.getItem('jira-access-token'))
 
@@ -93,9 +117,21 @@ function isAuthenticated() {
     return false
 }
 
+function isTrelloAuthenticated() {
+
+}
+
+function getTrelloToken() {
+
+}
+
 
 module.exports = {
-    auth: auth,
-    getAccessToken: getAccessToken,
-    isAuthenticated: isAuthenticated
+    handleJiraAuth: handleJiraAuth,
+    getJiraAccessToken: getJiraAccessToken,
+    isJiraAuthenticated: isJiraAuthenticated,
+    getJiraRedirect: getJiraRedirect,
+    handleTrelloAuth: handleTrelloAuth,
+    getTrelloToken: getTrelloToken,
+    isTrelloAuthenticated: isTrelloAuthenticated
 }

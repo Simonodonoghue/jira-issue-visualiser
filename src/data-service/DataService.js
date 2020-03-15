@@ -24,7 +24,7 @@ function executeJiraQuery(jql) {
             11. Status
         */
 
-        AuthService.getAccessToken().then(function (token) {
+        AuthService.getJiraAccessToken().then(function (token) {
             Http.send(JSON.stringify({
                 jql: jql,
                 type: 'issue',
@@ -67,7 +67,7 @@ function executeGetProjects() {
             11. Status
         */
 
-        AuthService.getAccessToken().then(function (token) {
+        AuthService.getJiraAccessToken().then(function (token) {
             Http.send(JSON.stringify({
                 type: 'project',
                 access_token: token,
@@ -85,8 +85,29 @@ function executeGetProjects() {
     })
 }
 
+function getCards(boardId) {
+    return new Promise(function (resolve, reject) {
+        var Http = new XMLHttpRequest();
+
+        var url = "https://api.trello.com/1/boards/591b615d0039a98cfa259b15/cards?key=752171e46c0819c7346de816860c9086&token=" + localStorage.getItem("trello-token");
+
+        Http.open("GET", url, true);
+
+        Http.onreadystatechange = (e) => {
+            if (Http.readyState == 4 && Http.status == 200) {
+                //console.log(Http.responseText);
+                resolve(JSON.parse(Http.responseText))
+            }
+        }
+
+        Http.send();
+
+    })
+
+}
 
 module.exports = {
     executeJiraQuery: executeJiraQuery,
-    executeGetProjects: executeGetProjects
+    executeGetProjects: executeGetProjects,
+    getCards: getCards
 }

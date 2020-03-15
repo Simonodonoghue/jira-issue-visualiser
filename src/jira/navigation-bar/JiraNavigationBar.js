@@ -5,9 +5,9 @@ import './NavigationBar.css';
 import {
   NavLink, Switch, Route
 } from "react-router-dom";
-import AuthService from '../auth-service/AuthService'
+import AuthService from '../../auth-service/AuthService'
 
-class NavigationBar extends Component {
+class JiraNavigationBar extends Component {
 
   // TODO - if there are no projects set - don't show the sub options
 
@@ -19,7 +19,7 @@ class NavigationBar extends Component {
         <Nav.Link as={NavLink} to="/settings"><IoIosCog style={{ margin: 'auto', display: 'block' }} color='white' size={32} /></Nav.Link>
       </Nav>
       )
-    } else if (AuthService.isAuthenticated) {
+    } else if (AuthService.isJiraAuthenticated()) {
       return (<Nav className="flex-column">
         <Nav.Link as={NavLink} to="/settings"><IoIosCog style={{ margin: 'auto', display: 'block' }} color='white' size={32} /></Nav.Link>
       </Nav>)
@@ -48,4 +48,4 @@ class NavigationBar extends Component {
   }
 }
 
-export default NavigationBar;
+export default JiraNavigationBar;
