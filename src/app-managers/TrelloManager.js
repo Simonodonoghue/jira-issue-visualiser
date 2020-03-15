@@ -18,6 +18,7 @@ import { withRouter } from "react-router-dom";
 import Settings from '../settings/Settings';
 import SelectProject from '../jira/select-project/SelectProject'
 import ChooseService from '../choose-service/ChooseService'
+import SelectBoard from '../trello/select-board/SelectBoard'
 
 class TrelloManager extends Component {
 
@@ -40,19 +41,17 @@ class TrelloManager extends Component {
                 isAuthd: true
             })
 
-            /*if (sessionStorage.getItem('selectedProject')) {
-                DataService.executeJiraQuery('project = ' + sessionStorage.getItem('selectedProject')).then((result) => {
+            if (sessionStorage.getItem('selectedBoard')) {
+                DataService.getCards(sessionStorage.getItem('selectedBoard')).then((result) => {
                     this.setState({
                         jiraData: result
                     })
                 })
-            }*/
+            }
 
-            self.executeQuery()
+            
 
         })
-
-        
 
     }
 
@@ -69,10 +68,12 @@ class TrelloManager extends Component {
     executeQuery(project) {
         var self = this
 
-        DataService.getCards().then((result) => {
+        DataService.getCards(project).then((result) => {
             this.setState({
                 data: result
             })
+
+            sessionStorage.setItem('selectedBoard', project)
 
             self.props.history.push('/trello/visualiser');
 
@@ -100,7 +101,7 @@ class TrelloManager extends Component {
                         <Col>
                             <Switch>
                                 <Route exact path="/trello">
-                                    select trello project
+                                    <SelectBoard projectSelectedHandler={this.projectSelectedHandler}></SelectBoard>
                                 </Route>
                                 <Route path="/trello/visualiser">
                                     {() => {

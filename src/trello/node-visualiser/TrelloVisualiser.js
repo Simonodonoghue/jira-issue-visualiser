@@ -26,21 +26,26 @@ class TrelloVisualiser extends Component {
             .attr("width", w)
             .attr("height", h);
 
-        var links = []
+        var links = localStorage.getItem(sessionStorage.getItem('selectedBoard')) ? JSON.parse(localStorage.getItem(sessionStorage.getItem('selectedBoard'))) : []
 
         var colourMap = {}
 
         var force = d3.forceSimulation(json)
-            .force("charge", d3.forceManyBody().strength(-2000))
+            .force("charge", d3.forceManyBody().strength(-4000))
             .force("center", d3.forceCenter(w / 2, h / 2))
             .force("x", d3.forceX(w / 2).strength(1))
             .force("y", d3.forceY(h / 2).strength(1))
+            .force("link", d3.forceLink(links).id(function (d) { return d.id; })
+                .distance(50)
+                .strength(1))
             .on("tick", tick);
 
         var linkGroup = vis.append("svg:g")
         var link = linkGroup.selectAll("line.link")
             .data(links)
             .enter().append("svg:line")
+            .attr("stroke", "#999")
+            .attr("stroke-width", 5);
 
 
         var node = vis.selectAll("g.node")
@@ -51,17 +56,18 @@ class TrelloVisualiser extends Component {
         node.append("circle")
             .attr("stroke", "#fff")
             .attr("stroke-width", 1.5)
-            .attr("r", 5)
-            .attr("fill", function(n) {
+            .attr("r", 10)
+            .attr("fill", function (n) {
                 if (!(n.idList in colourMap)) {
-                    colourMap[n.idList] = '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6)  
-                } 
+                    colourMap[n.idList] = '#' + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6)
+                }
 
                 return colourMap[n.idList]
             })
             .on('click', function (node) {
                 if (self.state && self.state.nodeA) {
                     links.push({ source: self.state.nodeA.id, target: node.id })
+
 
                     vis.selectAll("line").remove()
 
@@ -75,6 +81,17 @@ class TrelloVisualiser extends Component {
                         .attr("stroke", "#999")
                         .attr("stroke-width", 5);
 
+                    function saveLinks() {
+                        var saveArray = []
+
+                        links.forEach(function(item) {
+                            saveArray.push({source: item.source.id, target: item.target.id})
+                        })
+
+                        return saveArray
+                    }
+
+                    localStorage.setItem(sessionStorage.getItem('selectedBoard'), JSON.stringify(saveLinks(links)))
 
                     self.setState({
                         nodeA: undefined
@@ -85,7 +102,7 @@ class TrelloVisualiser extends Component {
                         nodeA: node
                     })
                 }
-                
+
             })
 
         node.append("svg:text")

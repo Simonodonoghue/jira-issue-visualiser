@@ -89,7 +89,7 @@ function getCards(boardId) {
     return new Promise(function (resolve, reject) {
         var Http = new XMLHttpRequest();
 
-        var url = "https://api.trello.com/1/boards/591b615d0039a98cfa259b15/cards?key=752171e46c0819c7346de816860c9086&token=" + AuthService.getTrelloToken();
+        var url = "https://api.trello.com/1/boards/" + boardId + "/cards?key=752171e46c0819c7346de816860c9086&token=" + AuthService.getTrelloToken();
 
         Http.open("GET", url, true);
 
@@ -106,8 +106,29 @@ function getCards(boardId) {
 
 }
 
+function getBoards() {
+    return new Promise(function (resolve, reject) {
+        var Http = new XMLHttpRequest();
+
+        var url = "https://api.trello.com/1/members/me/boards?key=752171e46c0819c7346de816860c9086&token=" + AuthService.getTrelloToken();
+
+        Http.open("GET", url, true);
+
+        Http.onreadystatechange = (e) => {
+            if (Http.readyState == 4 && Http.status == 200) {
+                //console.log(Http.responseText);
+                resolve(JSON.parse(Http.responseText))
+            }
+        }
+
+        Http.send();
+
+    })
+}
+
 module.exports = {
     executeJiraQuery: executeJiraQuery,
     executeGetProjects: executeGetProjects,
-    getCards: getCards
+    getCards: getCards,
+    getBoards: getBoards
 }

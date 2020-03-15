@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Navbar, Nav, Container, Row, Col } from 'react-bootstrap'
-import { IoIosAddCircleOutline, IoIosGitNetwork, IoIosPodium, IoIosCog, IoIosRocket } from 'react-icons/io'
+import { IoIosKeypad, IoIosGitNetwork, IoIosPodium, IoIosCog, IoIosRocket } from 'react-icons/io'
 import '../../navigation-bar/NavigationBar.css';
 import {
   NavLink, Switch, Route
@@ -14,6 +14,7 @@ class TrelloNavigationBar extends Component {
   renderSecondaryNavs() {
     if (sessionStorage.getItem('selectedProject')) {
       return (<Nav className="flex-column">
+        <Nav.Link as={NavLink} exact to="/trello"><IoIosKeypad style={{ margin: 'auto', display: 'block' }} color='white' size={32} /></Nav.Link>
         <Nav.Link as={NavLink} exact to="/trello/visualiser"><IoIosGitNetwork style={{ margin: 'auto', display: 'block' }} color='white' size={32} /></Nav.Link>
         <Nav.Link as={NavLink} exact to="/settings"><IoIosCog style={{ margin: 'auto', display: 'block' }} color='white' size={32} /></Nav.Link>
       </Nav>
