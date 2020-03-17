@@ -44,11 +44,11 @@ class SelectBoard extends Component {
                 var projectCard;
                 var projectClass = "project";
 
-                if (sessionStorage.getItem('selectedProject') == project.key) {
+                if (sessionStorage.getItem('selectedProject') == project.id) {
                     projectClass = "project selected"
                 }
 
-                if (self.state.selectedProject && project.key == self.state.selectedProject) {
+                if (self.state.selectedProject && project.id == self.state.selectedProject) {
                     // we need to show the loader
                     projectCard = (
                         <div>

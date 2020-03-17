@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Navbar, Nav, Container, Row, Col } from 'react-bootstrap'
-import { FaAudible } from 'react-icons/fa'
+import { Breadcrumb, Nav, Container, Row, Col } from 'react-bootstrap'
+import { FaAudible, FaCloudShowersHeavy } from 'react-icons/fa'
 import * as d3 from 'd3';
 import { event as currentEvent } from 'd3';
 import {
@@ -13,6 +13,20 @@ class TrelloVisualiser extends Component {
 
     constructor(props) {
         super(props)
+
+
+        var colourMap = {}
+
+        props.lists.forEach(function (list) {
+            if (!(list.id in colourMap)) {
+                colourMap[list.id] = '#' + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6)
+            }
+        })
+
+
+        this.state = {
+            colourMap: colourMap
+        }
     }
 
     componentDidMount() {
@@ -28,7 +42,28 @@ class TrelloVisualiser extends Component {
 
         var links = localStorage.getItem(sessionStorage.getItem('selectedBoard')) ? JSON.parse(localStorage.getItem(sessionStorage.getItem('selectedBoard'))) : []
 
-        var colourMap = {}
+        // check the links - some of the cards may have been removed on Trello
+        var newLinks = []
+        links.forEach(function (link) {
+            var foundSource = false
+            var foundTarget = false
+
+            for (var i = 0; i < json.length && (!foundSource || !foundTarget); i++) {
+                if (link.source == json[i].id) {
+                    foundSource = true
+                }
+
+                if (link.target == json[i].id) {
+                    foundTarget = true
+                }
+            }
+
+            if (foundSource && foundTarget) {
+                newLinks.push(link)
+            }
+        })
+
+        links = newLinks
 
         var force = d3.forceSimulation(json)
             .force("charge", d3.forceManyBody().strength(-4000))
@@ -58,14 +93,16 @@ class TrelloVisualiser extends Component {
             .attr("stroke-width", 1.5)
             .attr("r", 10)
             .attr("fill", function (n) {
-                if (!(n.idList in colourMap)) {
-                    colourMap[n.idList] = '#' + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6)
-                }
 
-                return colourMap[n.idList]
+
+                return self.state.colourMap[n.idList]
             })
             .on('click', function (node) {
                 if (self.state && self.state.nodeA) {
+
+                    /*links.forEach(function(item) {
+                        if (item.source == node.id || item.target == node.id)
+                    })*/
                     links.push({ source: self.state.nodeA.id, target: node.id })
 
 
@@ -84,8 +121,8 @@ class TrelloVisualiser extends Component {
                     function saveLinks() {
                         var saveArray = []
 
-                        links.forEach(function(item) {
-                            saveArray.push({source: item.source.id, target: item.target.id})
+                        links.forEach(function (item) {
+                            saveArray.push({ source: item.source.id, target: item.target.id })
                         })
 
                         return saveArray
@@ -149,6 +186,31 @@ class TrelloVisualiser extends Component {
             d3.event.subject.fy = null;
         }
 
+
+
+    }
+
+    generateLegend() {
+        var legend = []
+
+        var self = this
+
+        this.props.lists.forEach(function (list) {
+            legend.push(
+                <Col sm={3} className="mb-2">
+                    <Row>
+                        <Col sm={2}>
+                            <div style={{ backgroundColor: self.state.colourMap[list.id], height: '24px', width: '100%' }}></div>
+                        </Col>
+                        <Col sm={10}>
+                            <b>{list.name}</b>
+                        </Col>
+                    </Row>
+                </Col>
+            )
+        })
+
+        return legend
     }
 
     render() {
@@ -156,16 +218,27 @@ class TrelloVisualiser extends Component {
             console.log(this.state.nodeA)
         }
 
-        return (
+        if (this.props.data && this.props.lists) {
+            return (
 
-            <div>
+                <div>
+                    <Row>
+                        <Col className="mt-2">
+                            <Breadcrumb>
+                                {this.generateLegend()}
+                            </Breadcrumb>
+                        </Col>
+                    </Row>
+                    <svg id='node-graph'></svg>
 
-                <svg id='node-graph'></svg>
 
+                </div>
 
-            </div>
+            );
+        } else {
+            return (<div>loading</div>)
+        }
 
-        );
     }
 }
 

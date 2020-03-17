@@ -43,13 +43,18 @@ class TrelloManager extends Component {
 
             if (sessionStorage.getItem('selectedBoard')) {
                 DataService.getCards(sessionStorage.getItem('selectedBoard')).then((result) => {
-                    this.setState({
-                        jiraData: result
+                    DataService.getLists(sessionStorage.getItem('selectedBoard')).then((listResult) => {
+
+                        this.setState({
+                            data: result,
+                            lists: listResult
+                        })
+
                     })
                 })
             }
 
-            
+
 
         })
 
@@ -69,13 +74,21 @@ class TrelloManager extends Component {
         var self = this
 
         DataService.getCards(project).then((result) => {
-            this.setState({
-                data: result
+
+            DataService.getLists(project).then((listResult) => {
+
+                this.setState({
+                    data: result,
+                    lists: listResult
+                })
+
+                sessionStorage.setItem('selectedBoard', project)
+
+                self.props.history.push('/trello/visualiser');
+
             })
 
-            sessionStorage.setItem('selectedBoard', project)
 
-            self.props.history.push('/trello/visualiser');
 
         })
     }
@@ -107,7 +120,7 @@ class TrelloManager extends Component {
                                     {() => {
 
                                         if (this.state.data) {
-                                            return (<NodeVisualiser data={this.state.data} nodeClickHandler={this.nodeClickHandler} />)
+                                            return (<NodeVisualiser lists={this.state.lists} data={this.state.data} nodeClickHandler={this.nodeClickHandler} />)
                                         } else {
                                             return (
                                                 <Container fluid={true}>

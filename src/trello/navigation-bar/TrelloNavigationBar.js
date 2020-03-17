@@ -12,7 +12,7 @@ class TrelloNavigationBar extends Component {
   // TODO - if there are no projects set - don't show the sub options
 
   renderSecondaryNavs() {
-    if (sessionStorage.getItem('selectedProject')) {
+    if (sessionStorage.getItem('selectedBoard')) {
       return (<Nav className="flex-column">
         <Nav.Link as={NavLink} exact to="/trello"><IoIosKeypad style={{ margin: 'auto', display: 'block' }} color='white' size={32} /></Nav.Link>
         <Nav.Link as={NavLink} exact to="/trello/visualiser"><IoIosGitNetwork style={{ margin: 'auto', display: 'block' }} color='white' size={32} /></Nav.Link>

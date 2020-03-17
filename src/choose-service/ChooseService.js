@@ -38,23 +38,23 @@ class ChooseService extends Component {
                 <Row>
                     <Col>
                         <Card>
-                            <Card.Img style={{ backgroundColor: 'lightgray' }} variant="top" src={TrelloImg}></Card.Img>
+                            <iframe width="100%" height="200" src="https://www.youtube.com/embed/oxn2wsbdkVQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                             <Card.Body>
                                 <Card.Text>
                                     Connect with Trello to visualise the cards on your Trello board and make connections between related cards.
                                 </Card.Text>
-                                <Button variant="primary"><Link style={{ color: 'white' }} to="/trello">Authorise with Trello</Link></Button>
+                                <Button variant="primary"><Link style={{ color: 'white' }} to="/trello">Connect with Trello</Link></Button>
                             </Card.Body>
                         </Card>
                     </Col>
                     <Col>
                         <Card>
-                            <Card.Img style={{ backgroundColor: 'lightgray' }} variant="top" src={JiraImg}></Card.Img>
+                            <iframe width="100%" height="200" src="https://www.youtube.com/embed/oxn2wsbdkVQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                             <Card.Body>
                                 <Card.Text>
                                     Connect with Trello to visualise the cards on your Trello board and make connections between related cards.
                                 </Card.Text>
-                                <Button variant="primary"><Link style={{ color: 'white' }} to="/jira">Authorise with JIRA</Link></Button>
+                                <Button variant="primary"><Link style={{ color: 'white' }} to="/jira">Connect with JIRA</Link></Button>
                             </Card.Body>
                         </Card>
                     </Col>
