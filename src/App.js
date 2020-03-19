@@ -8,7 +8,6 @@ import {
   Switch,
   Route
 } from "react-router-dom";
-import Settings from './settings/Settings'
 
 
 import { withRouter } from "react-router-dom";
@@ -34,9 +33,6 @@ class App extends Component {
         </Route>
         <Route exact path="/trello*">
           <TrelloManager></TrelloManager>
-        </Route>
-        <Route exact path="/settings">
-          <Settings></Settings>
         </Route>
 
       </Switch>

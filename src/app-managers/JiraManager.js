@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import 'react-sliding-pane/dist/react-sliding-pane.css';
-import { Spinner, Container, Row, Col } from 'react-bootstrap'
+import { Button, Modal, Spinner, Container, Row, Col } from 'react-bootstrap'
 import { FaAudible } from 'react-icons/fa'
 import {
     BrowserRouter as Router,
@@ -15,7 +15,7 @@ import NodeVisualiser from '../jira/node-visualiser/NodeVisualiser'
 import JiraIssue from '../jira/jira-issue/JiraIssue'
 import ProjectCharts from '../jira/project-charts/ProjectCharts'
 import { withRouter } from "react-router-dom";
-import Settings from '../settings/Settings';
+import Settings from '../jira/settings/Settings';
 import SelectProject from '../jira/select-project/SelectProject'
 import ChooseService from '../choose-service/ChooseService'
 
@@ -25,9 +25,11 @@ class JiraManager extends Component {
         super(props)
         this.state = {
             isPaneOpen: false,
-            isAuthd: false
+            isAuthd: false,
+            showError: false
         }
 
+        this.handleClose = this.handleClose.bind(this)
         this.paneClosedHandler = this.paneClosedHandler.bind(this)
         this.nodeClickHandler = this.nodeClickHandler.bind(this)
         this.projectSelectedHandler = this.projectSelectedHandler.bind(this)
@@ -49,6 +51,10 @@ class JiraManager extends Component {
                 DataService.executeJiraQuery('project = ' + sessionStorage.getItem('selectedProject')).then((result) => {
                     this.setState({
                         jiraData: result
+                    })
+                }).catch(err => {
+                    this.setState({
+                        showError: true
                     })
                 })
             }
@@ -79,6 +85,10 @@ class JiraManager extends Component {
 
             self.props.history.push('/jira/visualiser');
 
+        }).catch(err => {
+            this.setState({
+                showError: true
+            })
         })
     }
 
@@ -86,6 +96,13 @@ class JiraManager extends Component {
         this.setState({
             isPaneOpen: true,
             paneDataObject: data
+        })
+    }
+
+    handleClose() {
+        sessionStorage.setItem('selectedProject',"")
+        this.setState({
+            showError: false
         })
     }
 
@@ -97,6 +114,18 @@ class JiraManager extends Component {
                 <div>
 
                     <JiraNavigationBar />
+
+                    <Modal show={this.state.showError} onHide={this.handleClose}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Woops!</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>Sorry, we're still in beta. We'll fix this as soon as possible. Thanks for using our product.</Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={this.handleClose}>
+                                Close
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
 
                     <Container fluid={true}>
 

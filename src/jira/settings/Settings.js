@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import './Settings.css';
 import moment from 'moment';
 import { Button, Row, Col } from 'react-bootstrap'
+import { withRouter } from "react-router-dom";
+
 
 class Settings extends Component {
 
@@ -13,8 +15,13 @@ class Settings extends Component {
 
     deauthoriseAccount() {
         // TODO - this needs to be moved into the AuthService in case it ever needs to be reused
-        localStorage.clear()
-        sessionStorage.clear()
+        localStorage.removeItem('jira-access-token')
+        localStorage.removeItem('jira-refresh-token')
+
+        this.props.history.push('/');
+
+
+
     }
 
     render() {
@@ -37,4 +44,4 @@ class Settings extends Component {
     }
 }
 
-export default Settings;
+export default withRouter(Settings);

@@ -17,7 +17,7 @@ class JiraNavigationBar extends Component {
         <Nav.Link as={NavLink} exact to="/jira"><IoIosKeypad style={{ margin: 'auto', display: 'block' }} color='white' size={32} /></Nav.Link>
         <Nav.Link as={NavLink} exact to="/jira/visualiser"><IoIosGitNetwork style={{ margin: 'auto', display: 'block' }} color='white' size={32} /></Nav.Link>
         <Nav.Link as={NavLink} exact to="/jira/charts"><IoIosPodium style={{ margin: 'auto', display: 'block' }} color='white' size={32} /></Nav.Link>
-        <Nav.Link as={NavLink} exact to="/settings"><IoIosCog style={{ margin: 'auto', display: 'block' }} color='white' size={32} /></Nav.Link>
+        <Nav.Link as={NavLink} exact to="/jira/settings"><IoIosCog style={{ margin: 'auto', display: 'block' }} color='white' size={32} /></Nav.Link>
       </Nav>
       )
     } else {

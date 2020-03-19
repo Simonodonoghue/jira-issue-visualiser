@@ -15,7 +15,7 @@ import NodeVisualiser from '../trello/node-visualiser/TrelloVisualiser'
 import JiraIssue from '../jira/jira-issue/JiraIssue'
 import ProjectCharts from '../jira/project-charts/ProjectCharts'
 import { withRouter } from "react-router-dom";
-import Settings from '../settings/Settings';
+import TrelloSettings from '../trello/settings/Settings';
 import SelectProject from '../jira/select-project/SelectProject'
 import ChooseService from '../choose-service/ChooseService'
 import SelectBoard from '../trello/select-board/SelectBoard'
@@ -137,7 +137,7 @@ class TrelloManager extends Component {
                                 </Route>
                                 <Route path="/trello/settings">
                                     {() => {
-                                        return <Settings />
+                                        return <TrelloSettings />
                                     }
                                     }
                                 </Route>

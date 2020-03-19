@@ -80,7 +80,7 @@ class TrelloVisualiser extends Component {
             .data(links)
             .enter().append("svg:line")
             .attr("stroke", "#999")
-            .attr("stroke-width", 5);
+            .attr("stroke-width", 2);
 
 
         var node = vis.selectAll("g.node")
@@ -116,7 +116,7 @@ class TrelloVisualiser extends Component {
                         .data(links)
                         .enter().append("svg:line")
                         .attr("stroke", "#999")
-                        .attr("stroke-width", 5);
+                        .attr("stroke-width", 2);
 
                     function saveLinks() {
                         var saveArray = []

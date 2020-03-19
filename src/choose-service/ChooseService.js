@@ -32,13 +32,8 @@ class ChooseService extends Component {
                 </Row>
                 <Row>
                     <Col>
-                        <iframe width="1110" height="315" src="https://www.youtube.com/embed/oxn2wsbdkVQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
                         <Card>
-                            <iframe width="100%" height="200" src="https://www.youtube.com/embed/oxn2wsbdkVQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <Card.Img variant="top" src={TrelloImg} />
                             <Card.Body>
                                 <Card.Text>
                                     Connect with Trello to visualise the cards on your Trello board and make connections between related cards.
@@ -49,7 +44,7 @@ class ChooseService extends Component {
                     </Col>
                     <Col>
                         <Card>
-                            <iframe width="100%" height="200" src="https://www.youtube.com/embed/oxn2wsbdkVQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <Card.Img variant="top" src={JiraImg} />
                             <Card.Body>
                                 <Card.Text>
                                     Connect with Trello to visualise the cards on your Trello board and make connections between related cards.
