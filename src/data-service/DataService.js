@@ -6,6 +6,8 @@ function executeJiraQuery(jql) {
     return new Promise(function (resolve, reject) {
         var Http = new XMLHttpRequest();
 
+        Http.timeout = 20000
+
         var url = config.QueryLambdaURL;
 
         Http.open("POST", url, true);
@@ -38,6 +40,10 @@ function executeJiraQuery(jql) {
                     resolve(JSON.parse(Http.responseText))
                 }
             }
+
+            Http.ontimeout = function (e) {
+                console.log("jira request timed out")
+            };
         })
 
 
