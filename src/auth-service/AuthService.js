@@ -44,7 +44,7 @@ function handleJiraAuth() {
 }
 
 function handleTrelloAuth() {
-    var authUrl = "https://api.trello.com/1/authorize?callback_method=fragment&return_url=http://localhost:3000/trello&scope=read&expiration=never&name=Test&key=752171e46c0819c7346de816860c9086&response_type=token"
+    var authUrl = config.TrelloAuthURL
 
     return new Promise(function (resolve, reject) {
         const trelloHash = location.hash.substr(1).split('=')[1];
