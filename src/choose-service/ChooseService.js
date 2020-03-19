@@ -27,7 +27,15 @@ class ChooseService extends Component {
                 </Row>
                 <Row>
                     <Col>
-                        <p>ergheger</p>
+                        <p>The Node Visualiser allows you to view your JIRA projects and Trello boards as a force-directed graph.</p>
+                            
+                        <p>With  JIRA, view your project through an entirely new lense, highlighting dependencies in a visual, interactive way.</p>
+
+                        <p>With Trello, draw dependencies between your cards to better organise your work. Something you cannot do in the Trello application</p>
+                        
+                        <p>This project is in beta, but with the recent influx in home working, maybe a half-baked product will help 1 or 2 projects collaborate. For that, it's worth it.</p>
+
+                        <p>Enjoy</p>
                     </Col>
                 </Row>
                 <Row>

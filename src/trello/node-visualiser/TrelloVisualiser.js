@@ -100,11 +100,21 @@ class TrelloVisualiser extends Component {
             .on('click', function (node) {
                 if (self.state && self.state.nodeA) {
 
-                    /*links.forEach(function(item) {
-                        if (item.source == node.id || item.target == node.id)
-                    })*/
-                    links.push({ source: self.state.nodeA.id, target: node.id })
+                    // check if we should be removing a node
+                    var updatedLinks = []
+                    links.forEach(function (item) {
+                        if (!((item.source.id == self.state.nodeA.id && item.target.id == node.id) ||
+                            (item.source.id == node.id && item.target.id == self.state.nodeA.id))
+                        ) {
+                            updatedLinks.push(item)
+                        }
+                    })
 
+                    if (links.length == updatedLinks.length) {
+                        links.push({ source: self.state.nodeA.id, target: node.id })
+                    } else {
+                        links = updatedLinks
+                    }
 
                     vis.selectAll("line").remove()
 

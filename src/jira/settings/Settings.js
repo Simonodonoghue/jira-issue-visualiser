@@ -33,7 +33,7 @@ class Settings extends Component {
                         Deauthorise Atlassian Account
                         </h1>
                     <p>
-                        Deauthorise your Atlassian account for use with the Jira Issue Visaliser by clicking the 'Deauthorise' Button below
+                        Deauthorise your Atlassian account by clicking the 'Deauthorise' button below
                         </p>
                     <p>
                         <Button variant="primary" onClick={this.deauthoriseAccount}>Deauthorise</Button>
