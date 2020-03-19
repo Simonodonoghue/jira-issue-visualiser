@@ -33,7 +33,7 @@ class ChooseService extends Component {
 
                         <p>With Trello, draw dependencies between your cards to better organise your work. Something you cannot do in the Trello application</p>
                         
-                        <p>This project is in beta, but with the recent influx in home working, maybe a half-baked product will help 1 or 2 projects collaborate. For that, it's worth it.</p>
+                        <p>This project is in beta, but with the recent uptake in home working, maybe a half-baked product will help 1 or 2 projects collaborate. For that, it's worth it.</p>
 
                         <p>Enjoy</p>
                     </Col>
