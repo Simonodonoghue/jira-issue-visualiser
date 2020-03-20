@@ -72,8 +72,7 @@
 }
 
 p {
-  font-size: 23px;
-  font-family: Glober-Thin;
+  font-size: 14px;
 }
 
 h1 {
@@ -83,4 +82,8 @@ h1 {
 
 h2 {
   font-family: Glober-Thin;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 }

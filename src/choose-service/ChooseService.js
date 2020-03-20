@@ -22,12 +22,12 @@ class ChooseService extends Component {
             <Container>
                 <Row>
                     <Col>
-                        <h1>Node Visualiser</h1>
+                        <h1>Task Visualiser</h1>
                     </Col>
                 </Row>
                 <Row>
                     <Col>
-                        <p>The Node Visualiser allows you to view your JIRA projects and Trello boards as a force-directed graph.</p>
+                        <p>The Task Visualiser allows you to view your JIRA projects and Trello boards as a force-directed graph.</p>
                             
                         <p>With  JIRA, view your project through an entirely new lense, highlighting dependencies in a visual, interactive way.</p>
 
@@ -41,7 +41,7 @@ class ChooseService extends Component {
                 <Row>
                     <Col>
                         <Card>
-                            <Card.Img variant="top" src={TrelloImg} />
+                            <Card.Img style={{backgroundColor: 'lightgray'}} variant="top" src={TrelloImg} />
                             <Card.Body>
                                 <Card.Text>
                                     Connect with Trello to visualise the cards on your Trello board and make connections between related cards.
@@ -52,7 +52,7 @@ class ChooseService extends Component {
                     </Col>
                     <Col>
                         <Card>
-                        <Card.Img variant="top" src={JiraImg} />
+                        <Card.Img variant="top" style={{backgroundColor:'lightgray'}} src={JiraImg} />
                             <Card.Body>
                                 <Card.Text>
                                     Connect with Trello to visualise the cards on your Trello board and make connections between related cards.
