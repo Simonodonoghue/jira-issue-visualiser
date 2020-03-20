@@ -33,12 +33,11 @@ class TrelloVisualiser extends Component {
         var json = this.props.data
 
         var w = window.innerWidth - 85,
-            h = window.innerHeight,
+            h = window.innerHeight - d3.select('#legend'). node().offsetHeight,
             radius = 15
 
         var vis = d3.select("#node-graph")
-            .attr("width", w)
-            .attr("height", h);
+            .attr("viewBox", "0 0 " + w + " " + h)
 
         var links = localStorage.getItem(sessionStorage.getItem('selectedBoard')) ? JSON.parse(localStorage.getItem(sessionStorage.getItem('selectedBoard'))) : []
 
@@ -66,8 +65,8 @@ class TrelloVisualiser extends Component {
         links = newLinks
 
         var force = d3.forceSimulation(json)
-            .force("charge", d3.forceManyBody().strength(-4000))
-            .force("center", d3.forceCenter(w / 2, h / 2))
+            .force("charge", d3.forceManyBody().strength(-8000))
+            //.force("center", d3.forceCenter(w / 2, h / 2))
             .force("x", d3.forceX(w / 2).strength(1))
             .force("y", d3.forceY(h / 2).strength(1))
             .force("link", d3.forceLink(links).id(function (d) { return d.id; })
@@ -232,7 +231,7 @@ class TrelloVisualiser extends Component {
             return (
 
                 <div>
-                    <Row>
+                    <Row id="legend">
                         <Col className="mt-2">
                             <Breadcrumb>
                                 {this.generateLegend()}

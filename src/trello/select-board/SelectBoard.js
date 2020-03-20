@@ -44,7 +44,7 @@ class SelectBoard extends Component {
                 var projectCard;
                 var projectClass = "project";
 
-                if (sessionStorage.getItem('selectedProject') == project.id) {
+                if (sessionStorage.getItem('selectedBoard') == project.id) {
                     projectClass = "project selected"
                 }
 

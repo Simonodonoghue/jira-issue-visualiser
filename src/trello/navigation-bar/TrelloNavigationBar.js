@@ -20,7 +20,9 @@ class TrelloNavigationBar extends Component {
       </Nav>
       )
     } else {
-      return (<div></div>)
+      return (<Nav className="flex-column">
+         <Nav.Link as={NavLink} exact to="/trello/settings"><IoIosCog style={{ margin: 'auto', display: 'block' }} color='white' size={32} /></Nav.Link>
+      </Nav>)
     }
   }
 
