@@ -158,8 +158,10 @@ class TrelloVisualiser extends Component {
 
 
         function tick() {
+            
+            
             node.attr("transform", function (d) {
-                return "translate(" + d.x + "," + d.y + ")";
+                return "translate(" + Math.max(radius, Math.min(w - radius, d.x)) + "," + Math.max(radius, Math.min(h - radius, d.y)) + ")";
             });
 
             link.attr("x1", function (d) { return d.source.x; })
