@@ -20,6 +20,7 @@ import SelectProject from '../jira/select-project/SelectProject'
 import ChooseService from '../choose-service/ChooseService'
 import SelectBoard from '../trello/select-board/SelectBoard'
 
+
 class TrelloManager extends Component {
 
     constructor(props) {
@@ -108,44 +109,48 @@ class TrelloManager extends Component {
 
                 <TrelloNavigationBar />
 
-                <Container fluid={true}>
+                <div style={{ paddingLeft: '64px', width: '100%' }}>
 
-                    <Row style={{ overflowX: 'hidden' }}>
-                        <Col>
-                            <Switch>
-                                <Route exact path="/trello">
-                                    <SelectBoard projectSelectedHandler={this.projectSelectedHandler}></SelectBoard>
-                                </Route>
-                                <Route path="/trello/visualiser">
-                                    {() => {
+                    <Container fluid={true}>
 
-                                        if (this.state.data) {
-                                            return (<NodeVisualiser lists={this.state.lists} data={this.state.data} nodeClickHandler={this.nodeClickHandler} />)
-                                        } else {
-                                            return (
-                                                <Container fluid={true}>
-                                                    <Row>
-                                                        <Col>
-                                                            <Spinner animation="border" />
-                                                        </Col>
-                                                    </Row>
-                                                </Container>
-                                            )
+                        <Row style={{ overflowX: 'hidden' }}>
+                            <Col>
+                                <Switch>
+                                    <Route exact path="/trello">
+                                        <SelectBoard projectSelectedHandler={this.projectSelectedHandler}></SelectBoard>
+                                    </Route>
+                                    <Route path="/trello/visualiser">
+                                        {() => {
+
+                                            if (this.state.data) {
+                                                return (<NodeVisualiser lists={this.state.lists} data={this.state.data} nodeClickHandler={this.nodeClickHandler} />)
+                                            } else {
+                                                return (
+                                                    <Container fluid={true}>
+                                                        <Row>
+                                                            <Col>
+                                                                <Spinner animation="border" />
+                                                            </Col>
+                                                        </Row>
+                                                    </Container>
+                                                )
+                                            }
                                         }
-                                    }
-                                    }
-                                </Route>
-                                <Route path="/trello/settings">
-                                    {() => {
-                                        return <TrelloSettings />
-                                    }
-                                    }
-                                </Route>
-                            </Switch>
-                        </Col>
-                    </Row>
+                                        }
+                                    </Route>
+                                    <Route path="/trello/settings">
+                                        {() => {
+                                            return <TrelloSettings />
+                                        }
+                                        }
+                                    </Route>
+                                </Switch>
+                            </Col>
+                        </Row>
 
-                </Container>
+                    </Container>
+
+                </div>
 
                 <JiraIssue display={this.state.isPaneOpen} dataObject={this.state.paneDataObject} paneClosedHandler={this.paneClosedHandler} />
             </div>
