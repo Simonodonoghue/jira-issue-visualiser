@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "apexcharts": "^3.11.2",
+    "apexcharts": "^3.24.0",
     "bootstrap": "^4.4.1",
     "d3": "latest",
     "d3-selection": "latest",
